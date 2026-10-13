@@ -1,1 +1,38 @@
 Portfolio
+=========
+
+Oliver King's personal site: a terminal-styled single page, served as-is by GitHub Pages.
+There is no build step or framework, just HTML, CSS and an ES module.
+
+  index.html        page shell and static bio (readable without JS)
+  css/style.css     all styles; colors are the custom properties at the top
+  js/data.js        projects, experience, links  <- edit this to update content
+  js/main.js        renders data.js, status bar, scroll reveals, typed whoami, :commands
+  404.html          self-contained "No such file or directory" page
+  assets/fonts/     JetBrainsMono Nerd Font Mono, subset to woff2 (~45KB each, OFL)
+  assets/img/       web-sized photos
+
+Run locally
+  python3 -m http.server 4173      then open http://localhost:4173
+
+Deploy
+  Settings -> Pages -> Build and deployment -> Deploy from a branch -> main / (root).
+  The site goes live at https://oliolioxnfre.github.io/portfolio/. All paths are relative,
+  so a custom domain (CNAME) also works without changes.
+
+Adding a resume
+  Put the PDF at assets/resume.pdf and set `resume: "assets/resume.pdf"` in js/data.js.
+
+Using a Nerd Font icon that isn't in the subset
+  The fonts only contain the glyphs the site uses. To add one, re-subset from the official
+  release (github.com/ryanoasis/nerd-fonts, JetBrainsMono.tar.xz):
+
+    pip install fonttools brotli
+    pyftsubset JetBrainsMonoNerdFontMono-Regular.ttf --flavor=woff2 --layout-features='*' \
+      --output-file=assets/fonts/JetBrainsMonoNF-Regular.woff2 \
+      --unicodes="U+0020-007E,U+00A0-00FF,U+2010-2027,U+2030-203A,U+2190-2195,U+21B5,U+2500-25FF,U+2713,U+2717,U+F09B,U+F0E1,U+F0E0,U+F15C,U+F07B,U+F07C,U+F126,U+E702,U+F017,U+F041,U+F31A,U+F19D,U+F120,U+F2DB,U+F233,U+F001,U+F06A9,U+F0C0,U+F0B1,U+F023,U+F08E,U+F054,U+E0B0-E0B7,U+E7A8,U+F303,U+E725,U+F4BC,U+F0AC,U+F072,U+F1B2,U+F0A0,U+F111,U+F00C,U+F03E,U+F0C1,<NEW>"
+
+  (Repeat for Bold.) Look up codepoints at https://www.nerdfonts.com/cheat-sheet.
+
+Easter egg
+  Press ":" for a vim-style command line (:help).
