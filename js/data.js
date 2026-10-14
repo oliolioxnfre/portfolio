@@ -1,5 +1,5 @@
 // Site content. Edit this file to update projects, experience and links;
-// the page renders these lists on load.
+// the home page renders these lists on load.
 
 export const links = {
   github: "https://github.com/oliolioxnfre",
@@ -9,77 +9,59 @@ export const links = {
   resume: null,
 };
 
-// Rendered as `git log`, newest first. `when` is free text; leave it empty to omit.
+// Rendered as a timeline, newest first. `when` is free text; leave it empty to omit.
 export const experience = [
-  { when: "jul–aug 2026", what: "intern", where: "Appenza", note: "Egypt", head: true },
-  { when: "present", what: "vice president", where: "RUSLUG", note: "Rutgers University Student Linux User Group" },
-  { when: "", what: "b.s. computer science", where: "Rutgers University", note: "New Brunswick, NJ" },
+  { when: "Jul–Aug 2026", what: "Intern", where: "Appenza", note: "Egypt" },
+  { when: "Present", what: "Vice President", where: "RUSLUG", note: "Rutgers University Student Linux User Group" },
+  { when: "", what: "B.S. Computer Science", where: "Rutgers University", note: "New Brunswick, NJ" },
 ];
 
-// Rendered as `ls -la ~/projects`. `icon` is a Nerd Font codepoint that exists in the
-// subset font (see README). `repo: null` marks a private repo.
+// Rendered as the project grid. Each card links to projects/<slug>/, a hand-written page.
+// `image` is relative to the site root. `repo: null` marks a private repo.
 export const projects = [
   {
-    name: "homelab",
-    icon: "\u{f233}",
-    lang: "infra",
+    slug: "homelab",
+    name: "Homelab",
+    image: "assets/img/projects/homelab.webp",
     summary: "Self-hosted infrastructure running at home.",
-    // TODO(oliver): hardware, OS/hypervisor, services, what you learned.
-    body: [],
-    tags: ["linux", "self-hosting"],
+    tags: ["proxmox", "linux", "self-hosting"],
     repo: null,
-    wip: true,
   },
   {
-    name: "djwya",
-    icon: "\u{f001}",
-    lang: "ts",
+    slug: "djwya",
+    name: "DJWYA",
+    image: "assets/img/projects/djwya.webp",
     summary: "Spotify-based web app that finds where your favorite DJs are performing.",
-    body: [
-      "Reads your Spotify listening to work out which DJs you care about, then scours festival lineups and event listings to tell you where they're playing next.",
-      "Python ingestion service and scrapers feed a TypeScript web app; it also builds a \"sonic DNA\" profile for each genre.",
-    ],
-    tags: ["typescript", "python", "spotify api", "scraping"],
+    tags: ["typescript", "python", "spotify api"],
     repo: null,
   },
   {
-    name: "esp32-matrix",
-    icon: "\u{f2db}",
-    lang: "c++",
-    summary: "Desk ticker on an ESP32-S3 driving eight chained MAX7219 LED matrices.",
-    body: [
-      "Shows a synced clock and live stock prices, and plays Tetris and Stacker on its hardware buttons.",
-      "The display runs over SPI. Four active-low buttons with internal pull-ups handle power, screen cycling and game input, and a long press resets WiFi.",
-    ],
-    tags: ["c++", "esp32-s3", "max7219", "spi", "embedded"],
+    slug: "esp32-matrix",
+    name: "ESP32-Matrix",
+    image: "assets/img/projects/esp32-matrix.webp",
+    summary: "ESP32-S3 desk ticker on eight LED matrices: clock, stocks, Tetris.",
+    tags: ["c++", "esp32-s3", "embedded"],
     repo: "https://github.com/oliolioxnfre/ESP32AttiaMatrix",
   },
   {
-    name: "mojo-agent",
-    icon: "\u{f06a9}",
-    lang: "ts",
-    summary: "Voice-first executive assistant for email and WhatsApp that never sends anything without approval.",
-    body: [
-      "Ingests mail and messages, briefs its user each morning on what actually matters, and drafts replies that can be approved by swipe or by voice.",
-      "Every outbound action goes through a proposals table guarded by a Postgres trigger, and the known bypass paths are attack-tested. Model calls go through a logged, provider-agnostic gateway, and credentials sit in an encrypted store.",
-    ],
-    tags: ["typescript", "postgres", "microsoft graph", "realtime voice", "llm"],
+    slug: "mojo-agent",
+    name: "Mojo Agent",
+    image: "assets/img/projects/mojo-agent.webp",
+    summary: "Voice-first executive assistant for email and WhatsApp that never sends without approval.",
+    tags: ["typescript", "postgres", "llm"],
     repo: null,
   },
   {
-    name: "bios-programming",
-    icon: "\u{f4bc}",
-    lang: "fw",
+    slug: "bios-programming",
+    name: "BIOS Programming",
+    image: "assets/img/projects/bios-programming.webp",
     summary: "Low-level programming at the BIOS / firmware layer.",
-    // TODO(oliver): what you built, which toolchain, what ran on bare metal. Add tags too.
-    body: [],
-    tags: [],
+    tags: ["firmware"],
     repo: null,
-    wip: true,
   },
 ];
 
-// Rendered as `tree ~/misc`.
+// Rendered as the compact "Other repos" list under the grid.
 export const misc = [
   { name: "hyprcoop", lang: "rust", desc: "split-screen co-op launcher for Hyprland (bwrap-isolated gamepads, TUI)", url: "https://github.com/oliolioxnfre/hyprcoop" },
   { name: "custom-shell", lang: "c", desc: "unix shell: fork/execv, pipes, dup2, globbing", url: "https://github.com/oliolioxnfre/Custom-Shell" },

@@ -1,3 +1,4 @@
-# Full-size original photo (has EXIF); the site uses assets/img/ruslug.jpg
+# Full-size source images (some carry EXIF). The site uses the web-sized copies in assets/img/.
+/_originals/
 /RUSLUG.jpg
 .DS_Store

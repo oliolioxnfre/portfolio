@@ -4,13 +4,26 @@ Portfolio
 Oliver King's personal site: a terminal-styled single page, served as-is by GitHub Pages.
 There is no build step or framework, just HTML, CSS and an ES module.
 
-  index.html        page shell and static bio (readable without JS)
-  css/style.css     all styles; colors are the custom properties at the top
-  js/data.js        projects, experience, links  <- edit this to update content
-  js/main.js        renders data.js, status bar, scroll reveals, typed whoami, :commands
-  404.html          self-contained "No such file or directory" page
-  assets/fonts/     JetBrainsMono Nerd Font Mono, subset to woff2 (~45KB each, OFL)
-  assets/img/       web-sized photos
+  index.html            home page: boot sequence, hero, about, experience, project grid, contact
+  projects/<slug>/      one hand-written page per project (copy the commented section templates)
+  css/style.css         all styles, shared by every page; colors are the custom properties at the top
+  js/data.js            projects, experience, links  <- edit this to update the home page
+  js/shell.js           every page: status bar clock, active tab, ":" command line
+  js/home.js            home page: renders data.js, boot sequence, scroll reveals
+  404.html              self-contained "No such file or directory" page
+  assets/fonts/         JetBrainsMono Nerd Font Mono, subset to woff2 (~45KB each, OFL)
+  assets/img/           web-sized images; project logos in assets/img/projects/
+  _originals/           full-size source images (gitignored, never deployed)
+
+Adding a project
+  1. Add an entry to `projects` in js/data.js (slug, name, image, summary, tags, repo).
+  2. Copy projects/djwya/ to projects/<slug>/ and edit it. Update the previous/next links
+     at the bottom of the neighboring pages.
+
+Boot sequence
+  Plays once per browser session on the home page (skipped for deep links like /#projects and
+  for visitors with reduced motion enabled). Any key, click or scroll skips it. Replay it with the
+  "reboot" button in the footer or :boot. Clear it for testing with sessionStorage.clear().
 
 Run locally
   python3 -m http.server 4173      then open http://localhost:4173
@@ -30,7 +43,7 @@ Using a Nerd Font icon that isn't in the subset
     pip install fonttools brotli
     pyftsubset JetBrainsMonoNerdFontMono-Regular.ttf --flavor=woff2 --layout-features='*' \
       --output-file=assets/fonts/JetBrainsMonoNF-Regular.woff2 \
-      --unicodes="U+0020-007E,U+00A0-00FF,U+2010-2027,U+2030-203A,U+2190-2195,U+21B5,U+2500-25FF,U+2713,U+2717,U+F09B,U+F0E1,U+F0E0,U+F15C,U+F07B,U+F07C,U+F126,U+E702,U+F017,U+F041,U+F31A,U+F19D,U+F120,U+F2DB,U+F233,U+F001,U+F06A9,U+F0C0,U+F0B1,U+F023,U+F08E,U+F054,U+E0B0-E0B7,U+E7A8,U+F303,U+E725,U+F4BC,U+F0AC,U+F072,U+F1B2,U+F0A0,U+F111,U+F00C,U+F03E,U+F0C1,<NEW>"
+      --unicodes="U+0020-007E,U+00A0-00FF,U+2010-2027,U+2030-203A,U+2190-2199,U+21B5,U+2500-25FF,U+2713,U+2717,U+F09B,U+F0E1,U+F0E0,U+F15C,U+F07B,U+F07C,U+F126,U+E702,U+F017,U+F041,U+F31A,U+F19D,U+F120,U+F2DB,U+F233,U+F001,U+F06A9,U+F0C0,U+F0B1,U+F023,U+F08E,U+F054,U+E0B0-E0B7,U+E7A8,U+F303,U+E725,U+F4BC,U+F0AC,U+F072,U+F1B2,U+F0A0,U+F111,U+F00C,U+F03E,U+F0C1,U+F2F1,U+F060,U+F061,<NEW>"
 
   (Repeat for Bold.) Look up codepoints at https://www.nerdfonts.com/cheat-sheet.
 

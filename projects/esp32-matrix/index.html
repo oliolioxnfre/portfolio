@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ESP32-Matrix · Oliver King</title>
+  <meta name="description" content="ESP32-S3 desk ticker on eight chained MAX7219 LED matrices.">
+  <meta name="theme-color" content="#0e1014">
+  <meta property="og:title" content="ESP32-Matrix · Oliver King">
+  <meta property="og:description" content="ESP32-S3 desk ticker on eight chained MAX7219 LED matrices.">
+  <link rel="icon" href="../../favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="../../assets/fonts/JetBrainsMonoNF-Regular.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../../css/style.css">
+  <script>document.documentElement.classList.add("js")</script>
+  <script type="module" src="../../js/shell.js"></script>
+</head>
+<body data-root="../../">
+  <a class="skip" href="#main">skip to content</a>
+
+  <header class="bar">
+    <div class="bar-left">
+      <a class="seg seg-session" href="../../" aria-label="Oliver King, home"><span class="nf" aria-hidden="true">&#xf31a;</span><span class="label"> oliver</span></a>
+      <nav class="windows" aria-label="Site">
+        <a href="../../"><span class="n">0:</span>~</a>
+        <a href="../../#projects"><span class="n">1:</span>projects</a>
+        <a href="./" aria-current="true"><span class="n">2:</span>esp32-matrix</a>
+      </nav>
+    </div>
+    <div class="bar-right">
+      <span class="hint" aria-hidden="true"><kbd>:</kbd> cmd</span>
+      <span class="seg seg-loc"><span class="nf" aria-hidden="true">&#xf041;</span> nyc</span>
+      <span class="seg seg-clock"><span class="nf" aria-hidden="true">&#xf017;</span> <time id="clock">--:--</time></span>
+    </div>
+  </header>
+
+  <main id="main">
+    <p class="crumbs"><a href="../../">~</a> / <a href="../../#projects">projects</a> / esp32-matrix</p>
+
+    <header class="proj-hero">
+      <div class="proj-logo">
+        <img src="../../assets/img/projects/esp32-matrix.webp" alt="ESP32-Matrix logo" style="view-transition-name: logo-esp32-matrix">
+      </div>
+      <div>
+        <h1>ESP32-Matrix</h1>
+        <p class="tagline">ESP32-S3 desk ticker on eight chained MAX7219 LED matrices.</p>
+        <ul class="proj-meta">
+          <li><ul class="tags" aria-label="Stack"><li>c++</li><li>esp32-s3</li><li>max7219</li><li>spi</li><li>embedded</li></ul></li>
+          <li><a href="https://github.com/oliolioxnfre/ESP32AttiaMatrix"><span class="nf" aria-hidden="true">&#xf09b;</span> source</a></li>
+        </ul>
+      </div>
+    </header>
+
+    <div class="proj-body">
+      <section class="section" aria-labelledby="overview-h">
+        <header class="sec-head"><span class="sec-num">01</span><h2 id="overview-h">Overview</h2></header>
+        <div class="prose">
+          <p>Shows a synced clock and live stock prices, and plays Tetris and Stacker on its hardware buttons.</p>
+          <p>The display runs over SPI. Four active-low buttons with internal pull-ups handle power, screen cycling and game input, and a long press resets WiFi.</p>
+        </div>
+      </section>
+
+      <!--
+        Section templates: copy one above this comment, bump the number, and give it a unique id.
+        Put images in assets/img/projects/esp32-matrix/ (WebP or JPEG, about 1600px wide).
+
+      <section class="section" aria-labelledby="how-h">
+        <header class="sec-head"><span class="sec-num">02</span><h2 id="how-h">How it works</h2></header>
+        <div class="prose">
+          <p>...</p>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="gallery-h">
+        <header class="sec-head"><span class="sec-num">03</span><h2 id="gallery-h">Gallery</h2></header>
+        <figure class="photo">
+          <img src="../../assets/img/projects/esp32-matrix/shot-1.webp" alt="Describe the image" loading="lazy" decoding="async">
+          <figcaption>Caption</figcaption>
+        </figure>
+      </section>
+      -->
+    </div>
+
+    <nav class="proj-nav" aria-label="More projects">
+      <a class="prev" href="../djwya/"><span class="lbl">← previous</span>DJWYA</a>
+      <a class="next" href="../mojo-agent/"><span class="lbl">next →</span>Mojo Agent</a>
+    </nav>
+  </main>
+
+  <footer class="foot">
+    <p>© 2026 oliver king <span class="sep">·</span> <a href="../../#projects">all projects</a></p>
+  </footer>
+
+  <form class="cmdline" id="cmdline" hidden autocomplete="off">
+    <label for="cmd-input" class="sr-only">Command</label>
+    <span aria-hidden="true">:</span><input id="cmd-input" spellcheck="false" autocapitalize="off">
+    <output id="cmd-msg" aria-live="polite"></output>
+  </form>
+</body>
+</html>

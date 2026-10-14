@@ -9,23 +9,30 @@
   <meta property="og:title" content="Oliver King">
   <meta property="og:description" content="CS @ Rutgers · VP of RUSLUG · homelabs, embedded hardware, and agents.">
   <meta property="og:type" content="website">
-  <meta property="og:image" content="assets/img/ruslug.jpg">
+  <meta property="og:image" content="https://oliolioxnfre.github.io/portfolio/assets/img/me.jpg">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="preload" href="assets/fonts/JetBrainsMonoNF-Regular.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="css/style.css">
-  <script>(function (d) { d.classList.add("js"); try { if (!matchMedia("(prefers-reduced-motion: reduce)").matches && sessionStorage.getItem("typed") !== "1") d.classList.add("will-type"); } catch (e) {} })(document.documentElement)</script>
-  <script type="module" src="js/main.js"></script>
+  <!-- Decide before first paint whether to play the boot sequence:
+       first visit this session, no #deep-link, and motion allowed. -->
+  <script>(function (d) { d.classList.add("js"); try { if (!location.hash && !matchMedia("(prefers-reduced-motion: reduce)").matches && sessionStorage.getItem("booted") !== "1") d.classList.add("booting", "intro"); } catch (e) {} })(document.documentElement)</script>
+  <script type="module" src="js/home.js"></script>
 </head>
-<body>
+<body data-root="./">
+  <div id="boot" class="boot" aria-hidden="true">
+    <div class="boot-screen" id="boot-screen"></div>
+    <p class="boot-skip">press any key to skip</p>
+  </div>
+
   <a class="skip" href="#main">skip to content</a>
 
-  <header class="bar" role="banner">
+  <header class="bar">
     <div class="bar-left">
-      <span class="seg seg-session" aria-hidden="true"><span class="nf" aria-hidden="true">&#xf31a;</span><span class="label"> oliver</span></span>
+      <a class="seg seg-session" href="#top" aria-label="Oliver King, home"><span class="nf" aria-hidden="true">&#xf31a;</span><span class="label"> oliver</span></a>
       <nav class="windows" aria-label="Sections">
         <a href="#top" data-win="top"><span class="n">0:</span>whoami</a>
         <a href="#about" data-win="about"><span class="n">1:</span>about</a>
-        <a href="#log" data-win="log"><span class="n">2:</span>log</a>
+        <a href="#work" data-win="work"><span class="n">2:</span>work</a>
         <a href="#projects" data-win="projects"><span class="n">3:</span>projects</a>
         <a href="#contact" data-win="contact"><span class="n">4:</span>contact</a>
       </nav>
@@ -38,102 +45,78 @@
   </header>
 
   <main id="main">
-    <!-- whoami -->
-    <section id="top" class="block hero" aria-labelledby="name">
+    <!-- Hero -->
+    <section id="top" class="hero" aria-labelledby="name">
       <p class="prompt"><span class="ps1">oliver@nyc</span>:<span class="path">~</span>$ <span class="cmd" id="hero-cmd">whoami</span><span class="cursor hero-cursor" aria-hidden="true"></span></p>
-      <div class="out hero-out">
-        <h1 id="name">Oliver King</h1>
-        <p class="tagline">cs @ rutgers <span class="sep">·</span> vp of ruslug <span class="sep">·</span> homelabs, hardware &amp; agents</p>
-        <ul class="links" id="hero-links">
-          <li><a href="https://github.com/oliolioxnfre"><span class="nf" aria-hidden="true">&#xf09b;</span> github</a></li>
-          <li><a href="mailto:oli.m.king@proton.me"><span class="nf" aria-hidden="true">&#xf0e0;</span> email</a></li>
-          <li><a href="https://www.linkedin.com/in/oliver-m-king"><span class="nf" aria-hidden="true">&#xf0e1;</span> linkedin</a></li>
-        </ul>
+      <div class="hero-grid">
+        <div class="hero-text">
+          <h1 id="name" class="stagger" style="--i:0">Oliver King</h1>
+          <p class="tagline stagger" style="--i:1">CS @ Rutgers <span class="sep">·</span> VP of RUSLUG <span class="sep">·</span> homelabs, hardware &amp; agents</p>
+          <ul class="links stagger" style="--i:2" id="hero-links">
+            <li><a href="https://github.com/oliolioxnfre"><span class="nf" aria-hidden="true">&#xf09b;</span> github</a></li>
+            <li><a href="mailto:oli.m.king@proton.me"><span class="nf" aria-hidden="true">&#xf0e0;</span> email</a></li>
+            <li><a href="https://www.linkedin.com/in/oliver-m-king"><span class="nf" aria-hidden="true">&#xf0e1;</span> linkedin</a></li>
+          </ul>
+        </div>
+        <figure class="portrait stagger" style="--i:1">
+          <img src="assets/img/me.webp" width="832" height="900" alt="Portrait of Oliver King" fetchpriority="high">
+        </figure>
       </div>
     </section>
 
-    <!-- about -->
-    <section id="about" class="block" aria-labelledby="about-h">
-      <p class="prompt"><span class="ps1">oliver@nyc</span>:<span class="path">~</span>$ <span class="cmd">fastfetch</span></p>
-      <div class="out fetch">
-<pre class="tux" aria-hidden="true">    .--.
-   |o_o |
-   |:_/ |
-  //   \ \
- (|     | )
-/'\_   _/`\
-\___)=(___/</pre>
-        <dl class="fetch-info">
-          <div class="fetch-title"><span class="g">oliver</span>@<span class="g">nyc</span></div>
-          <div class="fetch-rule" aria-hidden="true">----------</div>
+    <!-- About -->
+    <section id="about" class="section" aria-labelledby="about-h">
+      <header class="sec-head"><span class="sec-num">01</span><h2 id="about-h">About</h2></header>
+      <div class="about-grid">
+        <div class="prose">
+          <p>I'm a computer science student at Rutgers, based in the NYC area. I like working close to the metal (firmware, microcontrollers, my homelab) and building agents that do real work.</p>
+          <p>I'm vice president of <a href="https://ruslug.org">RUSLUG</a>, the Rutgers University Student Linux User Group. This past summer I interned at Appenza in Egypt.</p>
+        </div>
+        <dl class="facts">
           <div><dt><span class="nf" aria-hidden="true">&#xf19d;</span> edu</dt><dd>B.S. Computer Science, Rutgers</dd></div>
           <div><dt><span class="nf" aria-hidden="true">&#xf0c0;</span> club</dt><dd>Vice President, RUSLUG</dd></div>
-          <div><dt><span class="nf" aria-hidden="true">&#xf0b1;</span> work</dt><dd>Intern @ Appenza, Egypt (Jul–Aug 2026)</dd></div>
+          <div><dt><span class="nf" aria-hidden="true">&#xf0b1;</span> work</dt><dd>Intern @ Appenza, Egypt</dd></div>
           <div><dt><span class="nf" aria-hidden="true">&#xf041;</span> loc</dt><dd>NYC area</dd></div>
           <div><dt><span class="nf" aria-hidden="true">&#xf120;</span> into</dt><dd>linux, embedded, self-hosting, agents</dd></div>
-          <div class="swatches" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
         </dl>
       </div>
-
-      <p class="prompt"><span class="ps1">oliver@nyc</span>:<span class="path">~</span>$ <span class="cmd">cat about.md</span></p>
-      <div class="out md">
-        <h2 id="about-h">about</h2>
-        <p>I'm a computer science student at Rutgers, based in the NYC area. I like working close to the metal (firmware, microcontrollers, my homelab) and building agents that do real work.</p>
-        <p>I'm vice president of <a href="https://ruslug.org">RUSLUG</a>, the Rutgers University Student Linux User Group. This past summer I interned at Appenza in Egypt.</p>
-      </div>
-
-      <p class="prompt"><span class="ps1">oliver@nyc</span>:<span class="path">~</span>$ <span class="cmd">kitten icat ruslug.jpg</span></p>
-      <figure class="out shot">
+      <figure class="photo">
         <img src="assets/img/ruslug.jpg" width="1400" height="1050" loading="lazy" decoding="async"
              alt="RUSLUG members posing and goofing around in a Rutgers classroom in front of a wall-mounted screen showing a Linux desktop, with a HackRU banner on the wall.">
-        <figcaption><span class="nf" aria-hidden="true">&#xf03e;</span> ruslug.jpg <span class="dim">· 1400×1050 · the rutgers student linux user group</span></figcaption>
+        <figcaption>RUSLUG, the Rutgers University Student Linux User Group</figcaption>
       </figure>
     </section>
 
-    <!-- experience -->
-    <section id="log" class="block" aria-labelledby="log-h">
-      <p class="prompt"><span class="ps1">oliver@nyc</span>:<span class="path">~</span>$ <span class="cmd">git log --oneline --graph career</span></p>
-      <h2 id="log-h" class="sr-only">Experience</h2>
-      <ol class="out gitlog" id="gitlog"></ol>
+    <!-- Experience -->
+    <section id="work" class="section" aria-labelledby="work-h">
+      <header class="sec-head"><span class="sec-num">02</span><h2 id="work-h">Experience</h2></header>
+      <ol class="timeline" id="timeline"></ol>
     </section>
 
-    <!-- projects -->
-    <section id="projects" class="block" aria-labelledby="projects-h">
-      <p class="prompt"><span class="ps1">oliver@nyc</span>:<span class="path">~</span>$ <span class="cmd">ls -la ~/projects</span></p>
-      <h2 id="projects-h" class="sr-only">Projects</h2>
-      <div class="out">
-        <p class="dim ls-total">total <span id="proj-count">5</span></p>
-        <ul class="ls" id="projects-list"></ul>
-        <noscript><p>Projects are listed on <a href="https://github.com/oliolioxnfre">GitHub</a>.</p></noscript>
-      </div>
+    <!-- Projects -->
+    <section id="projects" class="section" aria-labelledby="projects-h">
+      <header class="sec-head"><span class="sec-num">03</span><h2 id="projects-h">Projects</h2></header>
+      <ul class="grid" id="project-grid"></ul>
+      <noscript><p>Projects are listed on <a href="https://github.com/oliolioxnfre">GitHub</a>.</p></noscript>
 
-      <p class="prompt"><span class="ps1">oliver@nyc</span>:<span class="path">~</span>$ <span class="cmd">tree ~/misc</span></p>
-      <div class="out">
-        <p class="tree-root">~/misc</p>
-        <ul class="tree" id="misc-list"></ul>
-      </div>
+      <h3 class="sub-head" id="misc">Other repos</h3>
+      <ul class="repos" id="misc-list"></ul>
     </section>
 
-    <!-- contact -->
-    <section id="contact" class="block" aria-labelledby="contact-h">
-      <p class="prompt"><span class="ps1">oliver@nyc</span>:<span class="path">~</span>$ <span class="cmd">ping oliver</span></p>
-      <h2 id="contact-h" class="sr-only">Contact</h2>
-      <div class="out ping">
-        <p class="dim">PING oliver (nyc): 56 data bytes</p>
-        <ul id="ping-list">
-          <li>64 bytes from <span class="k">github</span>: <a href="https://github.com/oliolioxnfre">oliolioxnfre</a></li>
-          <li>64 bytes from <span class="k">mail</span>: <a href="mailto:oli.m.king@proton.me">oli.m.king@proton.me</a></li>
-          <li>64 bytes from <span class="k">linkedin</span>: <a href="https://www.linkedin.com/in/oliver-m-king">in/oliver-m-king</a></li>
-        </ul>
-        <p class="dim">--- oliver ping statistics ---<br>3 packets transmitted, 3 received, 0% packet loss</p>
-      </div>
-
-      <p class="prompt last"><span class="ps1">oliver@nyc</span>:<span class="path">~</span>$ <span class="cursor" aria-hidden="true"></span></p>
+    <!-- Contact -->
+    <section id="contact" class="section" aria-labelledby="contact-h">
+      <header class="sec-head"><span class="sec-num">04</span><h2 id="contact-h">Contact</h2></header>
+      <ul class="contact" id="contact-list">
+        <li><a href="mailto:oli.m.king@proton.me"><span class="nf" aria-hidden="true">&#xf0e0;</span><span class="c-k">email</span><span class="c-v">oli.m.king@proton.me</span></a></li>
+        <li><a href="https://github.com/oliolioxnfre"><span class="nf" aria-hidden="true">&#xf09b;</span><span class="c-k">github</span><span class="c-v">oliolioxnfre</span></a></li>
+        <li><a href="https://www.linkedin.com/in/oliver-m-king"><span class="nf" aria-hidden="true">&#xf0e1;</span><span class="c-k">linkedin</span><span class="c-v">in/oliver-m-king</span></a></li>
+      </ul>
     </section>
   </main>
 
   <footer class="foot">
-    <p>© <span id="year">2026</span> oliver king <span class="sep">·</span> plain html/css/js <span class="sep">·</span> served by github pages</p>
+    <p>© <span id="year">2026</span> oliver king <span class="sep">·</span> plain html/css/js on github pages</p>
+    <button type="button" class="reboot" id="reboot"><span class="nf" aria-hidden="true">&#xf2f1;</span> reboot</button>
   </footer>
 
   <form class="cmdline" id="cmdline" hidden autocomplete="off">
