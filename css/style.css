@@ -332,6 +332,7 @@ h1 {
 .a-fw rect { stroke: var(--amber); }
 .a-atk rect { stroke: var(--red); }
 .a-gpu rect { stroke: var(--magenta); }
+.a-voice { stroke: var(--magenta); stroke-dasharray: 4 3; }
 .a-led rect { stroke: var(--red); }
 .a-chip { fill: color-mix(in srgb, var(--green) 4%, transparent); stroke: var(--green); stroke-dasharray: 6 5; opacity: .8; }
 .a-chip-lbl { fill: var(--green); font-size: 11px; }

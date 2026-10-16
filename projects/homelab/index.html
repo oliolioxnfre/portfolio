@@ -42,10 +42,10 @@
       </div>
       <div>
         <h1>Homelab</h1>
-        <p class="tagline">A small enterprise network on one tower: a Windows domain, a firewall, a SIEM, and a GPU-passthrough desktop I can reach from anywhere.</p>
+        <p class="tagline">A small enterprise network on one tower: a Windows domain, a firewall, a SIEM, and a GPU-passthrough desktop I can reach from anywhere. It now also hosts my photos, my automations and my Linux club demos.</p>
         <ul class="proj-meta">
           <li><ul class="tags" aria-label="Stack"><li>proxmox</li><li>active directory</li><li>pfsense</li><li>splunk</li><li>tailscale</li></ul></li>
-          <li><span><span class="nf" aria-hidden="true">&#xf233;</span> 1 node <span class="sep">·</span> 8 VMs <span class="sep">·</span> solo</span></li>
+          <li><span><span class="nf" aria-hidden="true">&#xf233;</span> 1 node <span class="sep">·</span> 8 VMs <span class="sep">·</span> 4 containers <span class="sep">·</span> solo</span></li>
         </ul>
       </div>
     </header>
@@ -65,33 +65,37 @@
       <section class="section" aria-labelledby="inv-h">
         <header class="sec-head"><span class="sec-num">02</span><h2 id="inv-h">What's running</h2></header>
         <div class="prose">
-          <p>One node runs everything. VM IDs are grouped by role, so the number tells you what a machine does.</p>
+          <p>One node runs everything: eight VMs and four LXC containers. IDs are grouped by role, so the number tells you what a machine does.</p>
         </div>
         <dl class="stack specs">
           <div><dt>cpu</dt><dd>AMD Ryzen 7 3800X <span class="dim">· 8 cores / 16 threads</span></dd></div>
           <div><dt>memory</dt><dd>32 GB</dd></div>
-          <div><dt>hypervisor</dt><dd>Proxmox VE 9.1 <span class="dim">· KVM · EFI boot</span></dd></div>
+          <div><dt>hypervisor</dt><dd>Proxmox VE 9.1 <span class="dim">· KVM + LXC · EFI boot</span></dd></div>
           <div><dt>storage</dt><dd>local <span class="dim">·</span> local-lvm <span class="dim">·</span> vm-storage</dd></div>
         </dl>
         <div class="inv-wrap">
           <table class="inv">
-            <caption class="sr-only">Virtual machines on the Proxmox node</caption>
+            <caption class="sr-only">Virtual machines and containers on the Proxmox node</caption>
             <thead><tr><th scope="col">id</th><th scope="col">name</th><th scope="col">os</th><th scope="col">role</th></tr></thead>
             <tbody>
               <tr class="g"><th scope="row">100</th><td>omarchy</td><td>Arch Linux</td><td>my desktop, with the GPU passed through</td></tr>
+              <tr><th scope="row">101</th><td>immich</td><td>LXC container</td><td>Immich, my self-hosted photo library</td></tr>
               <tr><th scope="row">102</th><td>nix</td><td>NixOS</td><td>sandbox</td></tr>
-              <tr><th scope="row">103</th><td>openclaw</td><td>Linux</td><td>first home of the <a href="../djwya/">DJWYA</a> scrapers</td></tr>
+              <tr><th scope="row">103</th><td>openclaw</td><td>Linux</td><td>OpenClaw agent</td></tr>
               <tr class="g"><th scope="row">200</th><td>DC-01</td><td>Windows Server 2022</td><td>domain controller: AD DS, DNS, DHCP, Group Policy</td></tr>
               <tr><th scope="row">201</th><td>Win-client</td><td>Windows 11</td><td>domain-joined endpoint</td></tr>
               <tr class="g"><th scope="row">300</th><td>splunker01</td><td>Ubuntu Server</td><td>Splunk Enterprise (SIEM)</td></tr>
               <tr class="g"><th scope="row">400</th><td>Kali</td><td>Kali Linux</td><td>attack box</td></tr>
               <tr class="g"><th scope="row">500</th><td>pfSense</td><td>pfSense</td><td>router and firewall between home and lab</td></tr>
+              <tr class="g"><th scope="row">901</th><td>n8n</td><td>LXC container</td><td>n8n for simple automations</td></tr>
+              <tr><th scope="row">902</th><td>ironclaw</td><td>LXC container</td><td>IronClaw agent, part of <a href="../djwya/">DJWYA</a>'s first scraper</td></tr>
+              <tr><th scope="row">903</th><td>hermes</td><td>LXC container</td><td>agent testing</td></tr>
             </tbody>
           </table>
         </div>
         <figure class="photo">
-          <img src="../../assets/img/projects/homelab/proxmox-dashboard.jpg" width="1024" height="600" alt="Proxmox VE 9.1.4 node summary: 16 CPUs on a Ryzen 7 3800X, 31 GiB RAM, and the VM list on the left with omarchy, nix, openclaw, DC-01, Win-client, splunker01, Kali and pfSense" loading="lazy" decoding="async">
-          <figcaption>The node's summary page in the Proxmox web UI. Every VM in the table is in the tree on the left.</figcaption>
+          <img src="../../assets/img/projects/homelab/proxmox-dashboard.jpg" width="1600" height="802" alt="Proxmox VE 9.1.9 node summary: 16 CPUs on a Ryzen 7 3800X, 31 GiB RAM, and a tree on the left listing the containers immich, n8n, ironclaw and hermes and the VMs omarchy, nix, openclaw, DC-01, Win-client, splunker01, Kali and pfSense" loading="lazy" decoding="async">
+          <figcaption>The node's summary page in the Proxmox web UI. Every VM and container in the table is in the tree on the left.</figcaption>
         </figure>
       </section>
 
@@ -216,7 +220,7 @@
           </div></li>
           <li><span class="when">later</span><span class="dot" aria-hidden="true"></span><div>
             <span class="what">A lab box isn't production</span>
-            <span class="note">The first <a href="../djwya/">DJWYA</a> scrapers ran in VMs here. When I powered the node down for a few weeks, they stopped without telling anyone. I moved them to an always-on <a href="../bios-programming/">Chromebox</a> with alerting, and the lab went back to being a lab.</span>
+            <span class="note">The first <a href="../djwya/">DJWYA</a> scrapers ran in containers here. When I powered the node down for a few weeks, they stopped without telling anyone. I moved them to an always-on <a href="../bios-programming/">Chromebox</a> with alerting, and the lab went back to being a lab.</span>
           </div></li>
         </ol>
       </section>
@@ -233,28 +237,55 @@
         </ul>
       </section>
 
-      <!-- 07 · lessons -->
+      <!-- 07 · now -->
+      <section class="section" aria-labelledby="now-h">
+        <header class="sec-head"><span class="sec-num">07</span><h2 id="now-h">What it does now</h2></header>
+        <div class="prose">
+          <p>My Security+ study tapered off, but the node didn't go idle. It became the general-purpose server I lean on for everything else:</p>
+        </div>
+        <ul class="features">
+          <li>
+            <h3 class="feat-title">Linux club demos</h3>
+            <p>I'm vice president of RUSLUG, the Rutgers student Linux user group. When we want to look at a new distro, for new members or just for me, I spin it up as a VM and demo it live, without installing anything on anyone's laptop.</p>
+          </li>
+          <li>
+            <h3 class="feat-title">Immich</h3>
+            <p>Immich, a self-hosted photo library, runs in its own container, so my photos back up to hardware I own.</p>
+          </li>
+          <li>
+            <h3 class="feat-title">n8n</h3>
+            <p>An n8n container runs simple automated workflows. <a href="../djwya/">DJWYA</a>'s first scrapers ran here too, before they moved to an always-on <a href="../bios-programming/">Chromebox</a>.</p>
+          </li>
+          <li>
+            <h3 class="feat-title">A PCIe KVM for when it's off</h3>
+            <p>A headless server has one weak spot: Tailscale only works once the OS is up, so if the node was off or stuck, I couldn't reach it. I installed a PCIe KVM card, which gives me its screen, keyboard and power button over the network, all the way down to the BIOS. Now I can shut it down to save power and boot it again remotely. It's the homelab version of the out-of-band management that rack servers have built in.</p>
+          </li>
+        </ul>
+      </section>
+
+      <!-- 08 · lessons -->
       <section class="section" aria-labelledby="learn-h">
-        <header class="sec-head"><span class="sec-num">07</span><h2 id="learn-h">What carries over</h2></header>
+        <header class="sec-head"><span class="sec-num">08</span><h2 id="learn-h">What carries over</h2></header>
         <div class="prose">
           <p>I went in to study security, and that phase was short. The infrastructure is what stuck: installing a hypervisor on bare metal, wiring bridges and a firewall, standing up a domain with DNS, DHCP and Group Policy, getting logs from every endpoint into one place, and making all of it reachable remotely without exposing anything.</p>
           <p>Those are the same jobs an IT team does every day, at the scale of one tower. GPU passthrough taught me the most, because it made me troubleshoot across layers, from the PCIe hardware through the hypervisor to the guest OS.</p>
         </div>
         <aside class="callout">
-          <h3 class="feat-title">Where it's used today</h3>
-          <p>The lab still runs. The tailnet it started now connects my other machines, including the Chromebox that runs DJWYA's scrapers, and those scrapers started out here.</p>
+          <h3 class="feat-title">Beyond this box</h3>
+          <p>The tailnet this project started now connects my other machines too, including the <a href="../bios-programming/">Chromebox</a> that took over DJWYA's scrapers from the homelab.</p>
         </aside>
       </section>
 
-      <!-- 08 · stack -->
+      <!-- 09 · stack -->
       <section class="section" aria-labelledby="stack-h">
-        <header class="sec-head"><span class="sec-num">08</span><h2 id="stack-h">Stack</h2></header>
+        <header class="sec-head"><span class="sec-num">09</span><h2 id="stack-h">Stack</h2></header>
         <dl class="stack">
-          <div><dt>compute</dt><dd><ul class="tags"><li>proxmox ve</li><li>kvm</li><li>pcie passthrough</li><li>lvm</li></ul></dd></div>
+          <div><dt>compute</dt><dd><ul class="tags"><li>proxmox ve</li><li>kvm</li><li>lxc</li><li>pcie passthrough</li><li>lvm</li></ul></dd></div>
           <div><dt>network</dt><dd><ul class="tags"><li>pfsense</li><li>linux bridges</li><li>dns</li><li>dhcp</li><li>tailscale</li></ul></dd></div>
           <div><dt>identity</dt><dd><ul class="tags"><li>active directory</li><li>windows server 2022</li><li>group policy</li><li>windows 11</li></ul></dd></div>
           <div><dt>logging</dt><dd><ul class="tags"><li>splunk enterprise</li><li>universal forwarder</li><li>sysmon</li></ul></dd></div>
-          <div><dt>remote</dt><dd><ul class="tags"><li>sunshine</li><li>moonlight</li><li>nvenc</li></ul></dd></div>
+          <div><dt>remote</dt><dd><ul class="tags"><li>sunshine</li><li>moonlight</li><li>nvenc</li><li>pcie kvm</li></ul></dd></div>
+          <div><dt>services</dt><dd><ul class="tags"><li>immich</li><li>n8n</li></ul></dd></div>
           <div><dt>testing</dt><dd><ul class="tags"><li>kali linux</li><li>nmap</li><li>metasploitable 2</li></ul></dd></div>
         </dl>
       </section>

@@ -47,8 +47,8 @@ export const projects = [
     slug: "mojo-agent",
     name: "Mojo Agent",
     image: "assets/img/projects/mojo-agent.webp",
-    summary: "Voice-first executive assistant for email and WhatsApp that never sends without approval.",
-    tags: ["typescript", "postgres", "llm"],
+    summary: "Voice-first executive assistant I built and ran on a Tailscale-only VPS during my Appenza internship. It never sends without approval.",
+    tags: ["next.js", "postgres", "tailscale"],
     repo: null,
   },
   {

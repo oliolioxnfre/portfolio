@@ -4,10 +4,10 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Mojo Agent · Oliver King</title>
-  <meta name="description" content="Voice-first executive assistant for email and WhatsApp that never sends anything without approval.">
+  <meta name="description" content="A voice-first executive assistant I built and deployed for a client during my internship at Appenza. It reads mail, drafts replies, and never sends anything without approval.">
   <meta name="theme-color" content="#0e1014">
   <meta property="og:title" content="Mojo Agent · Oliver King">
-  <meta property="og:description" content="Voice-first executive assistant for email and WhatsApp that never sends anything without approval.">
+  <meta property="og:description" content="Voice-first executive assistant on a Tailscale-only VPS that never sends anything without approval.">
   <link rel="icon" href="../../favicon.svg" type="image/svg+xml">
   <link rel="preload" href="../../assets/fonts/JetBrainsMonoNF-Regular.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="../../css/style.css">
@@ -42,42 +42,180 @@
       </div>
       <div>
         <h1>Mojo Agent</h1>
-        <p class="tagline">Voice-first executive assistant for email and WhatsApp that never sends anything without approval.</p>
+        <p class="tagline">A voice-first executive assistant I built and deployed for a client during my internship. It reads mail, drafts replies, and never sends anything without approval.</p>
         <ul class="proj-meta">
-          <li><ul class="tags" aria-label="Stack"><li>typescript</li><li>postgres</li><li>microsoft graph</li><li>realtime voice</li><li>llm</li></ul></li>
+          <li><span><span class="nf" aria-hidden="true">&#xf0b1;</span> Appenza internship</span></li>
+          <li>Jul–Aug 2026 <span class="sep">·</span> full-stack + deployment</li>
           <li><span><span class="nf" aria-hidden="true">&#xf023;</span> private repo</span></li>
         </ul>
       </div>
     </header>
 
     <div class="proj-body">
-      <section class="section" aria-labelledby="overview-h">
-        <header class="sec-head"><span class="sec-num">01</span><h2 id="overview-h">Overview</h2></header>
+      <!-- 01 · what it is -->
+      <section class="section" aria-labelledby="what-h">
+        <header class="sec-head"><span class="sec-num">01</span><h2 id="what-h">What it is</h2></header>
         <div class="prose">
-          <p>Ingests mail and messages, briefs its user each morning on what actually matters, and drafts replies that can be approved by swipe or by voice.</p>
-          <p>Every outbound action goes through a proposals table guarded by a Postgres trigger, and the known bypass paths are attack-tested. Model calls go through a logged, provider-agnostic gateway, and credentials sit in an encrypted store.</p>
+          <p>My internship at Appenza wasn't the coffee-run kind. I joined as the full-stack engineer on one of their new startup ideas: Mojo, a real-time, voice-first executive assistant. The first client was the Head of Office at OBMMS.</p>
+          <p>Mojo reads his mail, briefs him each morning, drafts replies, and takes instructions by voice. Mail, Teams chats and WhatsApp Business messages feed a memory graph of the people, projects and companies he deals with. One rule drove the whole design: it never sends anything he hasn't approved.</p>
+          <p>My boss laid out the product. I built it, made the architecture and security decisions, ran the deployments, and worked with the OBMMS team to fit it to how their office actually runs. I built it with Claude Code: it wrote much of the implementation, and I reviewed, tested and debugged it.</p>
         </div>
       </section>
 
-      <!--
-        Section templates: copy one above this comment, bump the number, and give it a unique id.
-        Put images in assets/img/projects/mojo-agent/ (WebP or JPEG, about 1600px wide).
+      <!-- 02 · the IT side -->
+      <section class="section" aria-labelledby="it-h">
+        <header class="sec-head"><span class="sec-num">02</span><h2 id="it-h">The IT side</h2></header>
+        <div class="prose">
+          <p>Shipping software into a real office turned out to be half IT work:</p>
+        </div>
+        <ul class="features">
+          <li>
+            <h3 class="feat-title">Check DNS first</h3>
+            <p>The plan assumed Microsoft Graph for mail and calendar. An MX lookup showed the domain's mail was on Hostinger, and Graph wouldn't work without Microsoft 365 licences. I should have run that lookup before designing anything.</p>
+          </li>
+          <li>
+            <h3 class="feat-title">Domain migration</h3>
+            <p>I worked with the OBMMS IT team on moving the domain's mail off Hostinger. It was the roughest stretch of the internship.</p>
+          </li>
+          <li>
+            <h3 class="feat-title">Server administration</h3>
+            <p>I ran the production server, a Frankfurt VPS running Coolify and Docker. It has no public ingress and is reachable only over Tailscale.</p>
+          </li>
+          <li>
+            <h3 class="feat-title">Endpoint setup</h3>
+            <p>I set up Tailscale on the client's laptop, so the server never needed a public address.</p>
+          </li>
+          <li>
+            <h3 class="feat-title">Desk-side support</h3>
+            <p>I also became the office's go-to for IT: installing software on their computers and helping whenever an IT issue came up.</p>
+          </li>
+          <li>
+            <h3 class="feat-title">Least privilege</h3>
+            <p>I was offered admin access to everything. I declined and took one mailbox credential, the minimum the assistant needed.</p>
+          </li>
+        </ul>
+      </section>
 
+      <!-- 03 · architecture -->
       <section class="section" aria-labelledby="how-h">
-        <header class="sec-head"><span class="sec-num">02</span><h2 id="how-h">How it works</h2></header>
+        <header class="sec-head"><span class="sec-num">03</span><h2 id="how-h">How it works</h2></header>
         <div class="prose">
-          <p>...</p>
+          <p>A Next.js app and a Python sidecar run under Coolify on the VPS. Postgres is the system of record for drafts, approvals and the audit log. FalkorDB holds the relationship graph that the Graphiti sidecar builds, and it can be rebuilt from Postgres. Mail moves over IMAP and SMTP.</p>
+          <p>Voice audio goes directly between the laptop and OpenAI. The server only issues a short-lived key and runs the tool calls, so it never handles the audio stream.</p>
         </div>
-      </section>
+        <figure class="arch">
+          <div class="arch-scroll">
+            <svg viewBox="0 0 760 430" role="img" aria-labelledby="mojo-title mojo-desc">
+              <title id="mojo-title">Mojo Agent architecture</title>
+              <desc id="mojo-desc">The client's laptop and a Frankfurt VPS sit inside a Tailscale network with no public ingress. On the VPS, Coolify runs a Next.js app and a Python Graphiti sidecar on an internal Docker network. The app writes drafts, approvals and the audit log to Postgres, where a trigger enforces approval. The sidecar writes to a FalkorDB memory graph, which can be rebuilt from Postgres and publishes no ports. The VPS reaches the mail server over IMAP and SMTP and calls LLM providers. Voice audio goes directly between the laptop and OpenAI Realtime, bypassing the server.</desc>
+              <defs>
+                <marker id="arw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="a-head"/></marker>
+              </defs>
 
-      <section class="section" aria-labelledby="gallery-h">
-        <header class="sec-head"><span class="sec-num">03</span><h2 id="gallery-h">Gallery</h2></header>
-        <figure class="photo">
-          <img src="../../assets/img/projects/mojo-agent/shot-1.webp" alt="Describe the image" loading="lazy" decoding="async">
-          <figcaption>Caption</figcaption>
+              <rect class="a-net" x="20" y="40" width="530" height="310" rx="8"/>
+              <text class="a-net-lbl" x="538" y="342" text-anchor="end">tailnet · no public ingress</text>
+              <rect class="a-chip" x="216" y="58" width="318" height="262" rx="8"/>
+              <text class="a-chip-lbl" x="522" y="312" text-anchor="end">frankfurt vps · coolify · docker</text>
+
+              <g class="a-box"><rect x="40" y="76" width="140" height="56" rx="6"/><text x="110" y="100">laptop</text><text class="a-sub" x="110" y="120">PIN-locked app</text></g>
+              <text class="a-lbl" x="70" y="154">gets a short-lived</text>
+              <text class="a-lbl" x="70" y="170">voice key from app</text>
+
+              <g class="a-box"><rect x="236" y="76" width="116" height="56" rx="6"/><text x="294" y="100">Next.js</text><text class="a-sub" x="294" y="120">app · approvals</text></g>
+              <g class="a-box"><rect x="398" y="76" width="116" height="56" rx="6"/><text x="456" y="100">sidecar</text><text class="a-sub" x="456" y="120">Python · Graphiti</text></g>
+              <g class="a-box a-db"><rect x="236" y="186" width="116" height="56" rx="6"/><text x="294" y="210">Postgres</text><text class="a-sub" x="294" y="230">drafts · audit</text></g>
+              <g class="a-box"><rect x="398" y="186" width="116" height="56" rx="6"/><text x="456" y="210">FalkorDB</text><text class="a-sub" x="456" y="230">memory graph</text></g>
+              <text class="a-lbl" x="236" y="266">approval enforced</text>
+              <text class="a-lbl" x="236" y="282">by a DB trigger</text>
+              <text class="a-lbl" x="398" y="266">graph + sidecar</text>
+              <text class="a-lbl" x="398" y="282">publish no ports</text>
+
+              <g class="a-box a-ext"><rect x="590" y="76" width="150" height="56" rx="6"/><text x="665" y="100">mail server</text><text class="a-sub" x="665" y="120">IMAP · SMTP 587</text></g>
+              <g class="a-box a-ext"><rect x="590" y="186" width="150" height="56" rx="6"/><text x="665" y="210">LLM providers</text><text class="a-sub" x="665" y="230">no-training terms</text></g>
+              <g class="a-box a-ext a-gpu"><rect x="270" y="370" width="200" height="48" rx="6"/><text x="370" y="399">OpenAI Realtime</text></g>
+
+              <line class="a-edge" x1="182" y1="104" x2="234" y2="104" marker-end="url(#arw)" marker-start="url(#arw)"/>
+              <line class="a-edge" x1="354" y1="104" x2="396" y2="104" marker-end="url(#arw)"/>
+              <line class="a-edge" x1="294" y1="132" x2="294" y2="184" marker-end="url(#arw)"/>
+              <line class="a-edge" x1="456" y1="132" x2="456" y2="184" marker-end="url(#arw)"/>
+              <line class="a-edge a-dash" x1="354" y1="214" x2="396" y2="214" marker-end="url(#arw)"/>
+              <text class="a-lbl" x="375" y="178" text-anchor="middle">rebuild</text>
+              <line class="a-edge" x1="536" y1="104" x2="588" y2="104" marker-end="url(#arw)" marker-start="url(#arw)"/>
+              <line class="a-edge" x1="536" y1="214" x2="588" y2="214" marker-end="url(#arw)"/>
+              <path class="a-edge a-voice" d="M58,134 V394 H268" fill="none" marker-end="url(#arw)" marker-start="url(#arw)"/>
+              <text class="a-lbl" x="70" y="386">voice audio, direct</text>
+            </svg>
+          </div>
         </figure>
       </section>
-      -->
+
+      <!-- 04 · the interesting problem -->
+      <section class="section" aria-labelledby="story-h">
+        <header class="sec-head"><span class="sec-num">04</span><h2 id="story-h">The reply that never sent</h2></header>
+        <div class="prose">
+          <p>In a rehearsal, an approved reply never went out, and the assistant kept saying it was "still processing." I fixed three plausible causes before I read the evidence I already had:</p>
+        </div>
+        <ol class="timeline story">
+          <li><span class="when">fix 1</span><span class="dot" aria-hidden="true"></span><div>
+            <span class="what">Port 465 was blackholed</span>
+            <span class="note">That network silently dropped traffic to SMTP port 465, so I moved to 587.</span>
+          </div></li>
+          <li><span class="when">fix 2</span><span class="dot" aria-hidden="true"></span><div>
+            <span class="what">Hanging instead of failing</span>
+            <span class="note">The send had hung rather than erroring, because no timeouts were set. I added them.</span>
+          </div></li>
+          <li><span class="when">fix 3</span><span class="dot" aria-hidden="true"></span><div>
+            <span class="what">A stranded draft</span>
+            <span class="note">The failure left the draft marked approved but unsent, and invisible to the queue. A failed send now returns the draft to pending and records why.</span>
+          </div></li>
+          <li><span class="when">still broken</span><span class="dot" aria-hidden="true"></span><div>
+            <span class="what">Reading the audit log properly</span>
+            <span class="note">Mail still didn't leave. The audit log had said it all along: "No recipients defined." nodemailer doesn't derive the SMTP envelope from a raw message's headers, so I built both from one recipient list. That fixed it.</span>
+          </div></li>
+          <li><span class="when">now</span><span class="dot" aria-hidden="true"></span><div>
+            <span class="what">The health check logs in</span>
+            <span class="note">The health check now verifies the SMTP login too, so a broken send path shows up before someone approves a reply.</span>
+          </div></li>
+        </ol>
+      </section>
+
+      <!-- 05 · security -->
+      <section class="section" aria-labelledby="sec-h">
+        <header class="sec-head"><span class="sec-num">05</span><h2 id="sec-h">Security &amp; reliability</h2></header>
+        <ul class="checks">
+          <li><span class="ck" aria-hidden="true">✓</span><div><b>Approval in the database.</b> The no-send-without-approval rule is enforced by a Postgres trigger, not application code, and tests attack five ways around it.</div></li>
+          <li><span class="ck" aria-hidden="true">✓</span><div><b>Narrow access.</b> One mailbox credential instead of admin access to everything, and a server reachable only over Tailscale.</div></li>
+          <li><span class="ck" aria-hidden="true">✓</span><div><b>Secrets.</b> API keys are encrypted with AES-256-GCM in the database, not kept in files. A PIN with escalating lockouts guards the app and its API routes.</div></li>
+          <li><span class="ck" aria-hidden="true">✓</span><div><b>Internal services stay internal.</b> The graph database and the sidecar publish no ports.</div></li>
+          <li><span class="ck" aria-hidden="true">✓</span><div><b>Data handling.</b> Model calls carrying his mail are refused if the provider's terms allow training on it.</div></li>
+          <li><span class="ck todo" aria-hidden="true">○</span><div><b>Next.</b> A CI gate, since a push to master deploys directly. Open the mailbox read-only, with a test for the no-delete rule. And a named owner for the VPS.</div></li>
+        </ul>
+      </section>
+
+      <!-- 06 · lessons -->
+      <section class="section" aria-labelledby="learn-h">
+        <header class="sec-head"><span class="sec-num">06</span><h2 id="learn-h">What I'd do differently</h2></header>
+        <div class="prose">
+          <p>My internship ended before the project did. When I left, reading mail, sending approved replies and voice approval all worked. I don't know whether it's in daily use.</p>
+          <p>I'd separate the development and production databases from day one: twice, the test suite wiped live data. I'd check DNS before designing anything. And when something breaks, I'd read the logs I already have before fixing the causes I can imagine.</p>
+        </div>
+        <aside class="callout">
+          <h3 class="feat-title">What I took away</h3>
+          <p>How to run a real service on infrastructure I administered, with access kept as narrow as the job allowed.</p>
+        </aside>
+      </section>
+
+      <!-- 07 · stack -->
+      <section class="section" aria-labelledby="stack-h">
+        <header class="sec-head"><span class="sec-num">07</span><h2 id="stack-h">Stack</h2></header>
+        <dl class="stack">
+          <div><dt>app</dt><dd><ul class="tags"><li>next.js</li><li>typescript</li><li>python</li><li>nodemailer</li></ul></dd></div>
+          <div><dt>data</dt><dd><ul class="tags"><li>postgresql</li><li>falkordb</li><li>graphiti</li><li>aes-256-gcm</li></ul></dd></div>
+          <div><dt>ai</dt><dd><ul class="tags"><li>openai realtime</li><li>llm tool calls</li><li>claude code</li></ul></dd></div>
+          <div><dt>ops</dt><dd><ul class="tags"><li>coolify</li><li>docker</li><li>vps</li><li>tailscale</li></ul></dd></div>
+          <div><dt>mail</dt><dd><ul class="tags"><li>imap</li><li>smtp</li><li>dns / mx</li><li>microsoft 365</li><li>whatsapp business api</li></ul></dd></div>
+        </dl>
+      </section>
     </div>
 
     <nav class="proj-nav" aria-label="More projects">
