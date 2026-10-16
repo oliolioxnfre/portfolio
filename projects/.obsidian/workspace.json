@@ -93,12 +93,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "bios-programming/Bios Programming Writeup Draft.md",
+                "file": "mojo-agent/MoJo Agent Writeup.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Bios Programming Writeup Draft"
+              "title": "MoJo Agent Writeup"
             }
           }
         ],
@@ -180,7 +180,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "bios-programming/Bios Programming Writeup Draft.md",
+                "file": "mojo-agent/MoJo Agent Writeup.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -199,7 +199,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "bios-programming/Bios Programming Writeup Draft.md",
+                "file": "mojo-agent/MoJo Agent Writeup.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
@@ -242,7 +242,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "bios-programming/Bios Programming Writeup Draft.md",
+                "file": "mojo-agent/MoJo Agent Writeup.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
@@ -271,11 +271,12 @@
   },
   "active": "7164f77db48ca6fa",
   "lastOpenFiles": [
+    "bios-programming/Bios Programming Writeup Draft.md",
+    "bios-programming/ssh.png",
     "esp32-matrix/ESP32 Matrix Writeup.md",
     "homelab/Screenshot 2026-10-16 at 12.34.13 PM.png",
     "Screenshot 2026-10-16 at 12.34.13 PM.png",
     "esp32-matrix/IMG_6680.MOV",
-    "bios-programming/Bios Programming Writeup Draft.md",
     "Todo.md",
     "homelab/Homelab Writeup.md",
     "homelab/Homelab Diagram.avif",

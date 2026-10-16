@@ -55,8 +55,8 @@ export const projects = [
     slug: "bios-programming",
     name: "BIOS Programming",
     image: "assets/img/projects/bios-programming.webp",
-    summary: "Low-level programming at the BIOS / firmware layer.",
-    tags: ["firmware"],
+    summary: "Reflashed an enterprise-locked Chromebox's firmware chip with a hardware programmer to make it an always-on Debian server.",
+    tags: ["firmware", "hardware", "linux"],
     repo: null,
   },
 ];

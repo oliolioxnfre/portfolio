@@ -4,10 +4,10 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>BIOS Programming · Oliver King</title>
-  <meta name="description" content="Low-level programming at the BIOS / firmware layer.">
+  <meta name="description" content="Reflashing the SPI chip of an enterprise-locked ASUS Chromebox with a hardware programmer, turning it into an always-on Debian server.">
   <meta name="theme-color" content="#0e1014">
   <meta property="og:title" content="BIOS Programming · Oliver King">
-  <meta property="og:description" content="Low-level programming at the BIOS / firmware layer.">
+  <meta property="og:description" content="Reflashing an enterprise-locked Chromebox's firmware with a hardware programmer to turn it into an always-on Debian server.">
   <link rel="icon" href="../../favicon.svg" type="image/svg+xml">
   <link rel="preload" href="../../assets/fonts/JetBrainsMonoNF-Regular.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="../../css/style.css">
@@ -42,42 +42,153 @@
       </div>
       <div>
         <h1>BIOS Programming</h1>
-        <p class="tagline">Low-level programming at the BIOS / firmware layer.</p>
+        <p class="tagline">An enterprise-locked Chromebox, unlocked by reflashing its firmware chip with a hardware programmer. It's now an always-on Debian server.</p>
         <ul class="proj-meta">
-          <li><ul class="tags" aria-label="Stack"><li>firmware</li></ul></li>
-          <li><span><span class="nf" aria-hidden="true">&#xf023;</span> private repo</span></li>
+          <li><ul class="tags" aria-label="Stack"><li>firmware</li><li>spi flash</li><li>coreboot</li><li>debian</li></ul></li>
+          <li>Oct 2026 <span class="sep">·</span> solo</li>
         </ul>
       </div>
     </header>
 
     <div class="proj-body">
-      <section class="section" aria-labelledby="overview-h">
-        <header class="sec-head"><span class="sec-num">01</span><h2 id="overview-h">Overview</h2></header>
+      <!-- 01 · why -->
+      <section class="section" aria-labelledby="why-h">
+        <header class="sec-head"><span class="sec-num">01</span><h2 id="why-h">Why I did it</h2></header>
         <div class="prose">
-          <!-- TODO(oliver): write this up. -->
-          <p class="wip">Write-up in progress.</p>
+          <p>My <a href="../homelab/">homelab</a> draws a lot of power, so I don't want it running all the time. I'd already added a KVM so I could shut it down remotely, but some daily jobs need a machine that's always on, like the daily scrape that keeps <a href="../djwya/">DJWYA</a>'s festival lineups fresh.</p>
+          <p>I had an ASUS Chromebox CN60 I'd bought at a flea market about five years earlier. Back then I gave up on making it a usable computer, because developer mode was locked. Since then I'd solved enough low-level software and hardware problems to try again, and now I had a real job for it.</p>
         </div>
       </section>
 
-      <!--
-        Section templates: copy one above this comment, bump the number, and give it a unique id.
-        Put images in assets/img/projects/bios-programming/ (WebP or JPEG, about 1600px wide).
+      <!-- 02 · the problem -->
+      <section class="section" aria-labelledby="story-h">
+        <header class="sec-head"><span class="sec-num">02</span><h2 id="story-h">Why software couldn't fix it</h2></header>
+        <div class="prose">
+          <p>The Chromebox was still enrolled in Chrome Enterprise, and the policy blocked developer mode at the bootloader. Before reaching for hardware, I tried the cheaper fixes first:</p>
+        </div>
+        <ol class="timeline story">
+          <li><span class="when">symptom</span><span class="dot" aria-hidden="true"></span><div>
+            <span class="what">Ctrl + D gets an error buzzer</span>
+            <span class="note">The usual way into developer mode, pressing Ctrl + D at the ChromeOS recovery screen, just buzzed. An enterprise policy had it disabled.</span>
+          </div></li>
+          <li><span class="when">try 1</span><span class="dot" aria-hidden="true"></span><div>
+            <span class="what">Swap the SSD</span>
+            <span class="note">I pre-loaded an OS onto a different M.2 drive. It didn't boot: the stock firmware checks signatures before it will boot from a drive.</span>
+          </div></li>
+          <li><span class="when">try 2</span><span class="dot" aria-hidden="true"></span><div>
+            <span class="what">Reset the CMOS</span>
+            <span class="note">Pulling the RTC battery reset the clock but not the policy. The enrollment flag isn't stored in CMOS.</span>
+          </div></li>
+          <li><span class="when">cause</span><span class="dot" aria-hidden="true"></span><div>
+            <span class="what">The lock lives in the firmware chip</span>
+            <span class="note">ChromeOS uses a hardware root of trust. The enrollment flag sits in the Vital Product Data (VPD) region of the motherboard's SPI flash chip, and the stock firmware enforces Verified Boot. No software change could get past it, so the fix had to be on the chip itself.</span>
+          </div></li>
+        </ol>
+      </section>
 
+      <!-- 03 · the fix -->
       <section class="section" aria-labelledby="how-h">
-        <header class="sec-head"><span class="sec-num">02</span><h2 id="how-h">How it works</h2></header>
+        <header class="sec-head"><span class="sec-num">03</span><h2 id="how-h">Reflashing the chip</h2></header>
         <div class="prose">
-          <p>...</p>
+          <p>With no shell access, I went around the operating system entirely. A CH341A USB programmer with a 1.8 V adapter and an 8-pin SOIC clip let a second computer read and write the firmware chip directly on the board, a technique called in-system programming.</p>
         </div>
-      </section>
+        <figure class="arch">
+          <div class="arch-scroll">
+            <svg viewBox="0 0 760 250" role="img" aria-labelledby="isp-title isp-desc">
+              <title id="isp-title">In-system programming setup</title>
+              <desc id="isp-desc">A second computer connects over USB to a CH341A programmer with a 1.8 volt adapter. An 8-pin SOIC clip connects the programmer to the SPI flash chip on the Chromebox motherboard. The flash chip holds the firmware and the VPD region. A write-protect screw grounds the chip into read-only mode and was removed. After flashing, the board boots Debian from its M.2 SSD.</desc>
+              <defs>
+                <marker id="arw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="a-head"/></marker>
+              </defs>
 
-      <section class="section" aria-labelledby="gallery-h">
-        <header class="sec-head"><span class="sec-num">03</span><h2 id="gallery-h">Gallery</h2></header>
-        <figure class="photo">
-          <img src="../../assets/img/projects/bios-programming/shot-1.webp" alt="Describe the image" loading="lazy" decoding="async">
-          <figcaption>Caption</figcaption>
+              <rect class="a-chip" x="430" y="30" width="310" height="210" rx="8"/>
+              <text class="a-chip-lbl" x="728" y="232" text-anchor="end">chromebox cn60 · motherboard</text>
+
+              <g class="a-box"><rect x="20" y="64" width="130" height="56" rx="6"/><text x="85" y="88">second PC</text><text class="a-sub" x="85" y="108">flash software</text></g>
+              <g class="a-box"><rect x="200" y="64" width="150" height="56" rx="6"/><text x="275" y="88">CH341A</text><text class="a-sub" x="275" y="108">+ 1.8 V adapter</text></g>
+              <g class="a-box a-db"><rect x="446" y="64" width="150" height="56" rx="6"/><text x="521" y="88">SPI flash</text><text class="a-sub" x="521" y="108">firmware · VPD</text></g>
+              <g class="a-box"><rect x="626" y="64" width="100" height="56" rx="6"/><text x="676" y="88">Debian</text><text class="a-sub" x="676" y="108">M.2 SSD</text></g>
+              <g class="a-box a-atk a-ext"><rect x="446" y="160" width="150" height="48" rx="6"/><text x="521" y="182">WP screw</text><text class="a-sub" x="521" y="199">removed</text></g>
+
+              <line class="a-edge" x1="150" y1="92" x2="198" y2="92" marker-end="url(#arw)"/>
+              <text class="a-lbl" x="174" y="84" text-anchor="middle">USB</text>
+              <line class="a-edge" x1="350" y1="92" x2="444" y2="92" marker-end="url(#arw)"/>
+              <text class="a-lbl" x="388" y="84" text-anchor="middle">SOIC8 clip</text>
+              <line class="a-edge" x1="596" y1="92" x2="624" y2="92" marker-end="url(#arw)"/>
+              <line class="a-edge a-dash" x1="521" y1="160" x2="521" y2="122" marker-end="url(#arw)"/>
+              <text class="a-lbl" x="533" y="146">forced read-only</text>
+            </svg>
+          </div>
+        </figure>
+
+        <ol class="checks steps">
+          <li><span class="ck" aria-hidden="true">1</span><div><b>Remove write protection.</b> I took off the chassis and the fan to expose the 8-pin flash chip, then removed the write-protect screw near the Wi-Fi module. That screw grounds a pin that holds the chip read-only.</div></li>
+          <li><span class="ck" aria-hidden="true">2</span><div><b>Connect and verify.</b> I attached the clip with pin 1 (the red lead) on the chip's index dot, and read back the chip ID before writing anything to confirm the clip was seated correctly.</div></li>
+          <li><span class="ck" aria-hidden="true">3</span><div><b>Back up, then flash.</b> I saved a full copy of the factory ChromeOS firmware first, so the change could be undone. Then I erased the chip and wrote MrChromebox's open-source UEFI firmware, built for this board (codename Panther), and read it back to confirm every byte matched.</div></li>
+          <li><span class="ck" aria-hidden="true">4</span><div><b>Install the OS.</b> After reassembly, the board booted into the TianoCore UEFI payload instead of the ChromeOS recovery screen. I booted a Debian live USB and installed it onto the internal M.2 SSD.</div></li>
+        </ol>
+
+        <figure class="photo tall">
+          <img src="../../assets/img/projects/bios-programming/spi-clip.jpg" width="900" height="1200" alt="The opened Chromebox with its fan removed, an SOIC8 test clip clamped onto the flash chip, and the CH341A programmer plugged in with its red light on" loading="lazy" decoding="async">
+          <figcaption>The clip on the flash chip, fan removed, with the CH341A programmer in front.</figcaption>
         </figure>
       </section>
-      -->
+
+      <!-- 04 · result -->
+      <section class="section" aria-labelledby="result-h">
+        <header class="sec-head"><span class="sec-num">04</span><h2 id="result-h">What it runs now</h2></header>
+        <div class="prose">
+          <p>The Chromebox is now a small Debian server on my Tailscale network, and I manage it over SSH. It runs DJWYA's three scraper jobs as systemd timers with a dead-man's-switch alert, so the homelab can power down without taking anything with it.</p>
+        </div>
+        <dl class="stack specs">
+          <div><dt>hardware</dt><dd>ASUS Chromebox CN60 <span class="dim">· Panther · Intel Haswell</span></dd></div>
+          <div><dt>cpu</dt><dd>Intel Core i3-4010U <span class="dim">· 2 cores / 4 threads</span></dd></div>
+          <div><dt>memory</dt><dd>4 GB</dd></div>
+          <div><dt>firmware</dt><dd>MrChromebox UEFI <span class="dim">· coreboot + TianoCore</span></dd></div>
+          <div><dt>os</dt><dd>Debian 13 (trixie)</dd></div>
+          <div><dt>access</dt><dd>SSH over Tailscale</dd></div>
+        </dl>
+        <figure class="photo">
+          <img src="../../assets/img/projects/bios-programming/fastfetch.jpg" width="1400" height="618" alt="Terminal over SSH to the Chromebox showing fastfetch output: Debian GNU/Linux 13 on host Panther, Intel i3-4010U, 3.7 GiB memory, uptime 5 days 21 hours" loading="lazy" decoding="async">
+          <figcaption>SSH into the Chromebox over Tailscale: Debian 13 on Panther, almost six days of uptime.</figcaption>
+        </figure>
+      </section>
+
+      <!-- 05 · security -->
+      <section class="section" aria-labelledby="sec-h">
+        <header class="sec-head"><span class="sec-num">05</span><h2 id="sec-h">Security &amp; reliability</h2></header>
+        <ul class="checks">
+          <li><span class="ck" aria-hidden="true">✓</span><div><b>Reversible.</b> The factory firmware image is backed up, so the box can go back to stock ChromeOS.</div></li>
+          <li><span class="ck" aria-hidden="true">✓</span><div><b>Verified writes.</b> I checked the chip ID before writing and read the image back afterwards. A bad flash would have left the board unable to boot.</div></li>
+          <li><span class="ck" aria-hidden="true">✓</span><div><b>Remote access over Tailscale.</b> I reach the box with Tailscale SSH, so nothing on it needs to be exposed to the internet.</div></li>
+          <li><span class="ck todo" aria-hidden="true">!</span><div><b>Physical access beats policy.</b> The enterprise lock stopped every software approach, but it couldn't survive a cheap clip and a removed screw. Firmware controls only hold while the hardware write-protect does.</div></li>
+          <li><span class="ck todo" aria-hidden="true">!</span><div><b>Deprovision before disposal.</b> This box left its organization still enrolled. Releasing devices from management and wiping them before they're sold is part of the asset lifecycle, and it's easy to miss.</div></li>
+          <li><span class="ck todo" aria-hidden="true">○</span><div><b>Next.</b> The root disk is 79% full (10 of 13 GB). I want log rotation and a disk alert before the scrapers fill it.</div></li>
+        </ul>
+      </section>
+
+      <!-- 06 · lessons -->
+      <section class="section" aria-labelledby="learn-h">
+        <header class="sec-head"><span class="sec-num">06</span><h2 id="learn-h">What carries over</h2></header>
+        <div class="prose">
+          <p>Five years ago this box beat me. This time I worked out where the lock actually lived before trying to break it. The two failed attempts weren't wasted, because each one ruled out a layer: the drive, then the CMOS, which left the firmware chip.</p>
+          <p>The habits are what carry over to any hardware job: find pin 1 before connecting anything, know what's physically holding a part read-only, and back up before you write.</p>
+        </div>
+        <aside class="callout">
+          <h3 class="feat-title">Where it's used today</h3>
+          <p>A flea-market box that had been e-waste for five years is now the always-on server behind <a href="../djwya/">DJWYA</a>'s data, while the power-hungry homelab only runs when I need it.</p>
+        </aside>
+      </section>
+
+      <!-- 07 · stack -->
+      <section class="section" aria-labelledby="stack-h">
+        <header class="sec-head"><span class="sec-num">07</span><h2 id="stack-h">Stack</h2></header>
+        <dl class="stack">
+          <div><dt>hardware</dt><dd><ul class="tags"><li>ch341a programmer</li><li>1.8v adapter</li><li>soic8 clip</li><li>spi flash</li></ul></dd></div>
+          <div><dt>firmware</dt><dd><ul class="tags"><li>coreboot</li><li>mrchromebox uefi</li><li>tianocore</li><li>flashrom</li></ul></dd></div>
+          <div><dt>os</dt><dd><ul class="tags"><li>debian 13</li><li>systemd timers</li><li>ssh</li><li>tailscale</li></ul></dd></div>
+        </dl>
+      </section>
     </div>
 
     <nav class="proj-nav" aria-label="More projects">

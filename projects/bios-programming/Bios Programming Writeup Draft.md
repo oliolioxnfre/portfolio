@@ -1,3 +1,5 @@
+October 2026
+
 Human writeup:
 My Homelab was sucking power out of the wall at a fast rate and despite having installed a KVM for remote shutdowns, some of my scheduled daily processes such as my daily web-scrape for DJWYA needed a computer that was always on. I had a chromebox I bought from the flea market nearly a 5 years ago. But back then I had given up trying to make it a useable computer due to the box having a locked developer mode. But after having accumulated so much experience solving lowlevel software and hardware problems as well as having necessessity for one my projects I was ready to tackle the chromebox again.
 
@@ -40,24 +42,21 @@ Because software access to the shell console was restricted, the system was modi
 2. **SPI Flash Connection & Verification**
     
     - Attached the SOIC8 test clip directly to the chip pins, ensuring Pin 1 (red lead) aligned with the hardware index dot on the chip casing.
-        
-    - Connected the CH341A through a 1.8V level shifter to match the low-voltage SPI logic gates.
-        
+
     - Verified hardware detection via flashing software (`flashrom` / NeoProgrammer) to confirm pin alignment and chip ID readout (e.g., `W25Q64`).
         
 3. **Firmware Overwrite**
     
+    - Backed up the factory ChromeOS firmware
     - Erased the factory ChromeOS firmware image containing the enterprise enrollment parameters.
-        
     - Programmed the chip with the open-source **MrChromebox Full ROM UEFI Firmware** compiled for the _Panther_ architecture.
-        
     - Executed a read-verify check to ensure byte parity across the flash memory block.
         
 4. **Operating System Deployment**
     
     - Reassembled the hardware and powered on the system.
         
-    - Confirmed successful initialization of the **TianoCore UEFI** payload, completely replacing the stock ChromeOS recovery interface.
+    - Confirmed successful initialization of the **TianoCore UEFI** payload, completely replacing the stock ChromeOS recovery interface with the opensource coreboot firmware.
         
     - Booted a Debian Linux live USB and completed a full OS installation onto the internal M.2 SSD.
         
