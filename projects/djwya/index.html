@@ -4,15 +4,17 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>DJWYA · Oliver King</title>
-  <meta name="description" content="Spotify-based web app that finds where your favorite DJs are performing.">
+  <meta name="description" content="DJWYA ranks electronic music festivals by how closely their lineups match your listening history. Built solo, live at djwya.live.">
   <meta name="theme-color" content="#0e1014">
   <meta property="og:title" content="DJWYA · Oliver King">
-  <meta property="og:description" content="Spotify-based web app that finds where your favorite DJs are performing.">
+  <meta property="og:description" content="Ranks electronic music festivals by how closely their lineups match your listening history.">
   <link rel="icon" href="../../favicon.svg" type="image/svg+xml">
   <link rel="preload" href="../../assets/fonts/JetBrainsMonoNF-Regular.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preconnect" href="https://www.djwya.live">
   <link rel="stylesheet" href="../../css/style.css">
   <script>document.documentElement.classList.add("js")</script>
   <script type="module" src="../../js/shell.js"></script>
+  <script type="module" src="../../js/embed.js"></script>
 </head>
 <body data-root="../../">
   <a class="skip" href="#main">skip to content</a>
@@ -42,42 +44,207 @@
       </div>
       <div>
         <h1>DJWYA</h1>
-        <p class="tagline">Spotify-based web app that finds where your favorite DJs are performing.</p>
+        <p class="tagline">Ranks electronic music festivals by how closely their lineups match your listening history.</p>
         <ul class="proj-meta">
-          <li><ul class="tags" aria-label="Stack"><li>typescript</li><li>python</li><li>spotify api</li><li>scraping</li></ul></li>
+          <li><a href="https://www.djwya.live/"><span class="nf" aria-hidden="true">&#xf0ac;</span> djwya.live ↗</a></li>
+          <li>Feb–Oct 2026 <span class="sep">·</span> solo</li>
           <li><span><span class="nf" aria-hidden="true">&#xf023;</span> private repo</span></li>
         </ul>
       </div>
     </header>
 
     <div class="proj-body">
-      <section class="section" aria-labelledby="overview-h">
-        <header class="sec-head"><span class="sec-num">01</span><h2 id="overview-h">Overview</h2></header>
+      <!-- 01 · live demo -->
+      <section class="section" aria-labelledby="demo-h">
+        <header class="sec-head"><span class="sec-num">01</span><h2 id="demo-h">Try it</h2></header>
+
+        <div class="browser" id="demo" data-origin="https://www.djwya.live">
+          <div class="browser-tabs" role="tablist" aria-label="Pages of the live site">
+            <button type="button" role="tab" aria-selected="true" data-path="/">home</button>
+            <button type="button" role="tab" aria-selected="false" data-path="/graph">sonic universe</button>
+            <button type="button" role="tab" aria-selected="false" data-path="/festivals">festival map</button>
+          </div>
+          <div class="browser-bar">
+            <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
+            <span class="browser-url"><span class="nf" aria-hidden="true">&#xf023;</span> djwya.live<span class="browser-path">/</span></span>
+            <a class="browser-open" href="https://www.djwya.live/" target="_blank" rel="noopener">open ↗</a>
+          </div>
+          <div class="browser-view">
+            <iframe src="https://www.djwya.live/" title="DJWYA, live site" loading="lazy"
+                    referrerpolicy="strict-origin-when-cross-origin" allow="geolocation; fullscreen"></iframe>
+            <button type="button" class="browser-shield"><span>click to interact</span></button>
+          </div>
+        </div>
+        <p class="demo-note">This is the live site. Browse as a guest here, or <a href="https://www.djwya.live/login">sign in on djwya.live</a> to rank festivals against your own library.</p>
+      </section>
+
+      <!-- 02 · why -->
+      <section class="section" aria-labelledby="why-h">
+        <header class="sec-head"><span class="sec-num">02</span><h2 id="why-h">Why I built it</h2></header>
         <div class="prose">
-          <p>Reads your Spotify listening to work out which DJs you care about, then scours festival lineups and event listings to tell you where they&#x27;re playing next.</p>
-          <p>Python ingestion service and scrapers feed a TypeScript web app; it also builds a &quot;sonic DNA&quot; profile for each genre.</p>
+          <p>After getting into electronic music, my goal was to go to a real festival. But there are too many festivals, too many posters, and too many artists. I spent hours reading lineup posters for names I recognized, then digging through other artists' discographies to see if I'd even like the sound.</p>
+          <p>Electronic listening is wide and shallow: you're more likely to play one song each from 100 artists than ten songs each from ten. Dozens of artists I liked slipped past me on those posters. Most festival finders also cover only a fraction of the festivals that happen each year.</p>
+          <p>Tickets for the big ones start around $300 before travel, so I wasn't going to settle for a festival that didn't have it all: artists I like, genres I like, and a vibe I like. DJWYA treats taste as data so that choice is backed by numbers instead of marketing.</p>
         </div>
       </section>
 
-      <!--
-        Section templates: copy one above this comment, bump the number, and give it a unique id.
-        Put images in assets/img/projects/djwya/ (WebP or JPEG, about 1600px wide).
+      <!-- 03 · what it does -->
+      <section class="section" aria-labelledby="what-h">
+        <header class="sec-head"><span class="sec-num">03</span><h2 id="what-h">What it does</h2></header>
 
+        <div class="dna">
+          <div class="prose">
+            <h3 class="feat-title">Sonic DNA</h3>
+            <p>The core of DJWYA is a seven-axis model of how electronic music sounds: intensity, euphoria, space, pulse, chaos, swing and bass. Every subgenre gets a position in that space, and every artist inherits a profile from the genres they play.</p>
+            <p>Connect your library and your listening becomes a vector too. Every festival lineup gets a synergy score for how closely it matches you.</p>
+            <p class="dim small">I placed the genres by hand, after listening to hundreds of them.</p>
+          </div>
+          <figure class="dna-fig">
+            <svg class="radar" viewBox="0 0 320 250" role="img" aria-label="Example Sonic DNA profile on seven axes: intensity, euphoria, space, pulse, chaos, swing and bass"><polygon class="r-ring" points="160.0,99.3 182.4,110.1 187.9,134.4 172.4,153.8 147.6,153.8 132.1,134.4 137.6,110.1"/><polygon class="r-ring" points="160.0,70.7 204.8,92.3 215.9,140.8 184.9,179.7 135.1,179.7 104.1,140.8 115.2,92.3"/><polygon class="r-ring" points="160.0,42.0 227.2,74.4 243.8,147.1 197.3,205.5 122.7,205.5 76.2,147.1 92.8,74.4"/><line class="r-spoke" x1="160" y1="128" x2="160.0" y2="42.0"/><line class="r-spoke" x1="160" y1="128" x2="227.2" y2="74.4"/><line class="r-spoke" x1="160" y1="128" x2="243.8" y2="147.1"/><line class="r-spoke" x1="160" y1="128" x2="197.3" y2="205.5"/><line class="r-spoke" x1="160" y1="128" x2="122.7" y2="205.5"/><line class="r-spoke" x1="160" y1="128" x2="76.2" y2="147.1"/><line class="r-spoke" x1="160" y1="128" x2="92.8" y2="74.4"/><polygon class="r-shape" points="160.0,57.5 199.0,96.9 198.6,136.8 193.6,197.7 145.8,157.4 134.8,133.7 102.2,81.9"/><circle class="r-dot" cx="160.0" cy="57.5" r="2.5"/><circle class="r-dot" cx="199.0" cy="96.9" r="2.5"/><circle class="r-dot" cx="198.6" cy="136.8" r="2.5"/><circle class="r-dot" cx="193.6" cy="197.7" r="2.5"/><circle class="r-dot" cx="145.8" cy="157.4" r="2.5"/><circle class="r-dot" cx="134.8" cy="133.7" r="2.5"/><circle class="r-dot" cx="102.2" cy="81.9" r="2.5"/><text class="r-lbl" x="160.0" y="30.0" text-anchor="middle">Intensity</text><text class="r-lbl" x="239.7" y="68.4" text-anchor="start">Euphoria</text><text class="r-lbl" x="259.4" y="154.7" text-anchor="start">Space</text><text class="r-lbl" x="204.3" y="223.9" text-anchor="start">Pulse</text><text class="r-lbl" x="115.7" y="223.9" text-anchor="end">Chaos</text><text class="r-lbl" x="60.6" y="154.7" text-anchor="end">Swing</text><text class="r-lbl" x="80.3" y="68.4" text-anchor="end">Bass</text></svg>
+            <figcaption>an example profile</figcaption>
+          </figure>
+        </div>
+
+        <ul class="features">
+          <li>
+            <h3 class="feat-title">Sonic Universe</h3>
+            <p>An interactive D3 force-directed graph of electronic music, wiring hundreds of genres together by lineage. Genres can have several parents and children, so a tree wasn't enough. I researched where each style came from, and an LLM-assisted script helped fill in the edges.</p>
+            <button type="button" class="demo-jump" data-demo="/graph">open it above ↑</button>
+          </li>
+          <li>
+            <h3 class="feat-title">Festival map</h3>
+            <p>Every festival in the database plotted worldwide with Leaflet, with clustering and geolocation, filterable by region, date and vibe. To get in, a festival has to be electronic or rock, have a set future date, and have a lineup of artists known to Spotify, SoundCloud or Last.fm.</p>
+            <button type="button" class="demo-jump" data-demo="/festivals">open it above ↑</button>
+          </li>
+          <li>
+            <h3 class="feat-title">Your taste, charted</h3>
+            <p>Dashboards built from your own library: a Sonic DNA star chart and genre distributions, generated by PostgreSQL queries over JSONB.</p>
+          </li>
+          <li>
+            <h3 class="feat-title">Crews</h3>
+            <p>The Crew Update finds the festival that best fits a group of two to eight friends at once.</p>
+          </li>
+          <li>
+            <h3 class="feat-title">Library import without Spotify's API</h3>
+            <p>Spotify locked its API down: an app can't have more than five users on Spotify sign-in until it has 250,000 active users. So playlists come in through Exportify, and Last.fm's listener-made tags classify the artists. Those tags turned out to be more accurate than Spotify's genres anyway.</p>
+          </li>
+          <li>
+            <h3 class="feat-title">Lineups from posters</h3>
+            <p>Scrapers find festival sites and lineup posters, then OCR and an LLM turn a flat image into structured rows in the database.</p>
+          </li>
+        </ul>
+      </section>
+
+      <!-- 04 · architecture -->
       <section class="section" aria-labelledby="how-h">
-        <header class="sec-head"><span class="sec-num">02</span><h2 id="how-h">How it works</h2></header>
+        <header class="sec-head"><span class="sec-num">04</span><h2 id="how-h">How it works</h2></header>
         <div class="prose">
-          <p>...</p>
+          <p>One Supabase Postgres database sits behind three components: a Next.js frontend on Vercel that reads under row-level security, a Python engine in Docker on Railway that scores festivals, and three scheduled scraper jobs on a repurposed <a href="../bios-programming/">ASUS Chromebox</a> on my Tailscale network.</p>
         </div>
-      </section>
+        <figure class="arch">
+          <div class="arch-scroll">
+            <svg viewBox="0 0 760 400" role="img" aria-labelledby="arch-title arch-desc">
+              <title id="arch-title">DJWYA architecture</title>
+              <desc id="arch-desc">The browser talks to a Next.js frontend on Vercel, which reads Postgres under row-level security. A Python engine on Railway pulls artist tags from Last.fm and writes to Postgres with server credentials. Three scraper jobs on a Chromebox inside the Tailscale network read festival sites and posters and post lineups to the engine with a shared secret.</desc>
+              <defs>
+                <marker id="arw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="a-head"/></marker>
+              </defs>
 
-      <section class="section" aria-labelledby="gallery-h">
-        <header class="sec-head"><span class="sec-num">03</span><h2 id="gallery-h">Gallery</h2></header>
-        <figure class="photo">
-          <img src="../../assets/img/projects/djwya/shot-1.webp" alt="Describe the image" loading="lazy" decoding="async">
-          <figcaption>Caption</figcaption>
+              <rect class="a-net" x="500" y="292" width="250" height="100" rx="8"/>
+              <text class="a-net-lbl" x="738" y="386" text-anchor="end">tailnet · tailscale</text>
+
+              <g class="a-box"><rect x="20" y="44" width="130" height="44" rx="6"/><text x="85" y="71">you · browser</text></g>
+              <g class="a-box"><rect x="230" y="30" width="200" height="72" rx="6"/><text x="330" y="62">Next.js frontend</text><text class="a-sub" x="330" y="82">Vercel</text></g>
+              <g class="a-box a-db"><rect x="230" y="200" width="200" height="72" rx="6"/><text x="330" y="232">Postgres</text><text class="a-sub" x="330" y="252">Supabase</text></g>
+              <g class="a-box"><rect x="530" y="200" width="210" height="72" rx="6"/><text x="635" y="232">Python engine</text><text class="a-sub" x="635" y="252">Docker · Railway</text></g>
+              <g class="a-box a-ext"><rect x="560" y="40" width="150" height="44" rx="6"/><text x="635" y="67">Last.fm API</text></g>
+              <g class="a-box"><rect x="520" y="322" width="210" height="58" rx="6"/><text x="625" y="347">scrapers ×3</text><text class="a-sub" x="625" y="366">Chromebox · systemd</text></g>
+              <g class="a-box a-ext"><rect x="20" y="328" width="200" height="44" rx="6"/><text x="120" y="355">festival sites, posters</text></g>
+
+              <line class="a-edge" x1="150" y1="66" x2="228" y2="66" marker-end="url(#arw)"/>
+              <line class="a-edge" x1="330" y1="102" x2="330" y2="198" marker-end="url(#arw)"/>
+              <text class="a-lbl" x="342" y="146">user session</text><text class="a-lbl" x="342" y="162">row-level security</text>
+              <line class="a-edge" x1="530" y1="236" x2="432" y2="236" marker-end="url(#arw)"/>
+              <text class="a-lbl" x="481" y="226" text-anchor="middle">server creds</text>
+              <line class="a-edge" x1="635" y1="84" x2="635" y2="198" marker-end="url(#arw)"/>
+              <text class="a-lbl" x="647" y="146">artist tags</text>
+              <line class="a-edge" x1="625" y1="322" x2="625" y2="274" marker-end="url(#arw)"/>
+              <text class="a-lbl" x="637" y="287">shared secret</text>
+              <line class="a-edge" x1="220" y1="350" x2="518" y2="350" marker-end="url(#arw)"/>
+              <text class="a-lbl" x="369" y="340" text-anchor="middle">scrape · OCR · LLM</text>
+            </svg>
+          </div>
         </figure>
       </section>
-      -->
+
+      <!-- 05 · the interesting problem -->
+      <section class="section" aria-labelledby="story-h">
+        <header class="sec-head"><span class="sec-num">05</span><h2 id="story-h">The scraper that failed quietly</h2></header>
+        <div class="prose">
+          <p>Lineups are the hardest data to keep fresh, and the scrapers taught me the most. They went through a few homes before they were reliable:</p>
+        </div>
+        <ol class="timeline story">
+          <li><span class="when">v1</span><span class="dot" aria-hidden="true"></span><div>
+            <span class="what">Agents in the homelab</span>
+            <span class="note">The first scrapers ran in Proxmox containers on my <a href="../homelab/">homelab</a>: n8n, plus IronClaw, a fork of OpenClaw I picked for its security model. I couldn't get the two to cooperate, and poster search is repetitive anyway. So I dropped the agent for a plain automation workflow that was cheaper and more accurate.</span>
+          </div></li>
+          <li><span class="when">September</span><span class="dot" aria-hidden="true"></span><div>
+            <span class="what">18 days of silence</span>
+            <span class="note">I powered the homelab down for a few weeks. The scraper stopped, nothing told me, and I noticed 18 days later.</span>
+          </div></li>
+          <li><span class="when">fix</span><span class="dot" aria-hidden="true"></span><div>
+            <span class="what">Moved to the Chromebox</span>
+            <span class="note">The jobs became systemd timers on the <a href="../bios-programming/">Chromebox</a> (MrChromebox firmware, Debian 13). Missed runs catch up at boot, every job has a timeout, and a healthchecks.io dead-man's switch alerts me if a run doesn't check in.</span>
+          </div></li>
+          <li><span class="when">days later</span><span class="dot" aria-hidden="true"></span><div>
+            <span class="what">Successful runs, almost no lineups</span>
+            <span class="note">Scrapes fell to nearly zero while every run still reported success. The failures were being recorded as "lineup not announced," which also pushed those festivals down the queue.</span>
+          </div></li>
+          <li><span class="when">telemetry</span><span class="dot" aria-hidden="true"></span><div>
+            <span class="what">One row per run, per festival, per network call</span>
+            <span class="note">The first instrumented run showed the cause. The search API key had hit its $5 spend cap, and the free fallback engines were blocking the box.</span>
+          </div></li>
+          <li><span class="when">now</span><span class="dot" aria-hidden="true"></span><div>
+            <span class="what">Outages look like outages</span>
+            <span class="note">Upstream failures leave the queue untouched, and a mostly-failed run exits with a distinct code so the alert fires. It runs unattended and tells me when a job fails, degrades or doesn't run at all.</span>
+          </div></li>
+        </ol>
+      </section>
+
+      <!-- 06 · security -->
+      <section class="section" aria-labelledby="sec-h">
+        <header class="sec-head"><span class="sec-num">06</span><h2 id="sec-h">Security &amp; reliability</h2></header>
+        <ul class="checks">
+          <li><span class="ck" aria-hidden="true">✓</span><div><b>Database grants.</b> I revoked default execute rights on privileged functions and granted them back per caller. Column-level grants hide user emails and stop users from changing their own role. Before this, any signed-in user could make themselves an admin.</div></li>
+          <li><span class="ck" aria-hidden="true">✓</span><div><b>Secrets.</b> These live only in environment files and platform variables, none appear in Git history, and the deploy script never copies them.</div></li>
+          <li><span class="ck" aria-hidden="true">✓</span><div><b>Found while writing this up.</b> The scrapers sent a shared secret that the engine never checked. I deployed the check, set the secret on both sides, and committed two database migrations that had been applied but never recorded.</div></li>
+          <li><span class="ck todo" aria-hidden="true">○</span><div><b>Next.</b> CI and branch protection, since deploys currently run straight from main, plus scheduled key rotation.</div></li>
+        </ul>
+      </section>
+
+      <!-- 07 · lessons -->
+      <section class="section" aria-labelledby="learn-h">
+        <header class="sec-head"><span class="sec-num">07</span><h2 id="learn-h">What I'd do differently</h2></header>
+        <div class="prose">
+          <p>DJWYA is my biggest project, and the one that exposed me to the most technology by far. I built it alone from February to October 2026. An AI coding assistant (Claude Code) wrote much of the code. I decided what to build, ran the infrastructure, and fixed what broke.</p>
+          <p>One cheap box is still a single point of failure: the alerting tells me when it's down but doesn't keep it up. Next time I'd build monitoring before the first outage, and keep every database change in version control from day one. The habit I took away is to check what's actually running before trusting the documentation, including my own.</p>
+        </div>
+        <aside class="callout">
+          <h3 class="feat-title">What's next</h3>
+          <p>I want every festival in the world on the map with a full lineup. Once the site is big enough, I'd like to release a standalone mobile app whose killer feature is mesh-network messaging, so you can find your friends at a festival even when the cell network is down.</p>
+        </aside>
+      </section>
+
+      <!-- 08 · stack -->
+      <section class="section" aria-labelledby="stack-h">
+        <header class="sec-head"><span class="sec-num">08</span><h2 id="stack-h">Stack</h2></header>
+        <dl class="stack">
+          <div><dt>frontend</dt><dd><ul class="tags"><li>next.js</li><li>react</li><li>typescript</li><li>tailwind</li><li>d3.js</li><li>leaflet</li></ul></dd></div>
+          <div><dt>backend</dt><dd><ul class="tags"><li>python</li><li>docker</li><li>railway</li><li>vercel</li><li>supabase</li><li>postgresql</li></ul></dd></div>
+          <div><dt>data</dt><dd><ul class="tags"><li>last.fm</li><li>exportify</li><li>soundcloud</li><li>gemini api</li><li>ocr</li><li>custom scrapers</li><li>custom mcp</li><li>n8n</li></ul></dd></div>
+          <div><dt>ops</dt><dd><ul class="tags"><li>tailscale</li><li>systemd timers</li><li>healthchecks.io</li><li>google cloud</li><li>imap / smtp</li><li>analytics</li><li>dns</li></ul></dd></div>
+        </dl>
+      </section>
     </div>
 
     <nav class="proj-nav" aria-label="More projects">

@@ -67,12 +67,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "bios-programming/Bios Programming Writeup Draft.md",
+                "file": "djwya/DJWYA Writeup.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Bios Programming Writeup Draft"
+              "title": "DJWYA Writeup"
             }
           }
         ],
@@ -154,7 +154,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "bios-programming/Bios Programming Writeup Draft.md",
+                "file": "djwya/DJWYA Writeup.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -173,7 +173,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "bios-programming/Bios Programming Writeup Draft.md",
+                "file": "djwya/DJWYA Writeup.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
@@ -216,7 +216,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "bios-programming/Bios Programming Writeup Draft.md",
+                "file": "djwya/DJWYA Writeup.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
@@ -245,14 +245,14 @@
   },
   "active": "7f6f9e2fd09b4127",
   "lastOpenFiles": [
-    "bios-programming/Bios programming.JPG",
-    "esp32-matrix/IMG_6680.MOV",
     "djwya/DJWYA WRITEUP 2.md",
     "djwya/DJWYA Writeup.md",
+    "bios-programming/Bios Programming Writeup Draft.md",
+    "bios-programming/Bios programming.JPG",
+    "esp32-matrix/IMG_6680.MOV",
     "mojo-agent/MoJo Agent Writeup.md",
     "homelab/Homelab Writeup.md",
     "homelab/Homelab Diagram.avif",
-    "homelab/Proxmox Dashboard.avif",
-    "bios-programming/Bios Programming Writeup Draft.md"
+    "homelab/Proxmox Dashboard.avif"
   ]
 }

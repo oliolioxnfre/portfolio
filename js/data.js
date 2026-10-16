@@ -31,8 +31,8 @@ export const projects = [
     slug: "djwya",
     name: "DJWYA",
     image: "assets/img/projects/djwya.webp",
-    summary: "Spotify-based web app that finds where your favorite DJs are performing.",
-    tags: ["typescript", "python", "spotify api"],
+    summary: "Ranks electronic music festivals by how closely their lineups match your listening history.",
+    tags: ["next.js", "python", "postgres", "d3"],
     repo: null,
   },
   {
