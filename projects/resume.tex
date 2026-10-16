@@ -1,0 +1,234 @@
+%-------------------------
+% Resume in Latex
+% Author : Jake Gutierrez
+% Based off of: https://github.com/sb2nov/resume
+% License : MIT
+%------------------------
+
+\documentclass[letterpaper,11pt]{article}
+
+\usepackage{latexsym}
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage{marvosym}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\usepackage[english]{babel}
+\usepackage{tabularx}
+\usepackage{fontawesome5}
+\usepackage{multicol}
+\setlength{\multicolsep}{-3.0pt}
+\setlength{\columnsep}{-1pt}
+\input{glyphtounicode}
+
+
+%----------FONT OPTIONS----------
+% sans-serif
+% \usepackage[sfdefault]{FiraSans}
+% \usepackage[sfdefault]{roboto}
+% \usepackage[sfdefault]{noto-sans}
+% \usepackage[default]{sourcesanspro}
+
+% serif
+% \usepackage{CormorantGaramond}
+% \usepackage{charter}
+
+
+\pagestyle{fancy}
+\fancyhf{} % clear all header and footer fields
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% Adjust margins
+\addtolength{\oddsidemargin}{-0.6in}
+\addtolength{\evensidemargin}{-0.5in}
+\addtolength{\textwidth}{1.19in}
+\addtolength{\topmargin}{-.7in}
+\addtolength{\textheight}{1.4in}
+
+\urlstyle{same}
+
+\raggedbottom
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+% Sections formatting
+\titleformat{\section}{
+  \vspace{-4pt}\scshape\raggedright\large\bfseries
+}{}{0em}{}[\color{black}\titlerule \vspace{-5pt}]
+
+% Ensure that generate pdf is machine readable/ATS parsable
+\pdfgentounicode=1
+
+%-------------------------
+% Custom commands
+\newcommand{\resumeItem}[1]{
+  \item\small{
+    {#1 \vspace{-2pt}}
+  }
+}
+
+\newcommand{\classesList}[4]{
+    \item\small{
+        {#1 #2 #3 #4 \vspace{-2pt}}
+  }
+}
+
+\newcommand{\resumeSubheading}[4]{
+  \vspace{-2pt}\item
+    \begin{tabular*}{1.0\textwidth}[t]{l@{\extracolsep{\fill}}r}
+      \textbf{#1} & \textbf{\small #2} \\
+      \textit{\small#3} & \textit{\small #4} \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeSubSubheading}[2]{
+    \item
+    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+      \textit{\small#1} & \textit{\small #2} \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeProjectHeading}[2]{
+    \item
+    \begin{tabular*}{1.001\textwidth}{l@{\extracolsep{\fill}}r}
+      \small#1 & \textbf{\small #2}\\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeSubItem}[1]{\resumeItem{#1}\vspace{-4pt}}
+
+\renewcommand\labelitemi{$\vcenter{\hbox{\tiny$\bullet$}}$}
+\renewcommand\labelitemii{$\vcenter{\hbox{\tiny$\bullet$}}$}
+
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.0in, label={}]}
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
+\newcommand{\resumeItemListStart}{\begin{itemize}}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-5pt}}
+
+%-------------------------------------------
+%%%%%%  RESUME STARTS HERE  %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{document}
+
+
+%----------HEADING----------
+
+\begin{center}
+    {\Huge \scshape Oliver King} \\ \vspace{1pt}
+    62 Paulin BLVD, Leonia, NJ 07605 \\ \vspace{1pt}
+    \small \raisebox{-0.1\height}\faPhone\ 201-402-8109 ~ \href{mailto:oli.m.king@proton.me}{\raisebox{-0.2\height}\faEnvelope\  \underline{oli.m.king@proton.me}} ~
+    \href{https://linkedin.com/in/oliver-m-king/}{\raisebox{-0.2\height}\faLinkedin\ \underline{linkedin.com/in/oliver-m-king}}  ~
+    \href{https://github.com/oliolioxnfre}{\raisebox{-0.2\height}\faGithub\ \underline{github.com/oliolioxnfre}}  ~
+    \href{https://oliolioxnfre.github.io/portfolio/}{\raisebox{-0.2\height}\faBriefcase\ \underline{Portfolio}}
+    \vspace{-8pt}
+
+\end{center}
+
+
+%-----------EDUCATION-----------
+\section{EDUCATION}
+  \resumeSubHeadingListStart
+ \resumeSubheading
+      {Rutgers University}{Sep 2022 -- Dec 2026}
+      {Bachelor of Science in Computer Science} {New Brunswick, NJ}
+  \resumeSubHeadingListEnd
+  \vspace{-6pt}
+  {\small \textbf{Coursework:} OS Design, Internet Technology, Computer Security, Systems Programming, Computer Architecture}
+\vspace{-6pt}
+
+
+%-----------SKILLS-----------
+\section{SKILLS}
+ \begin{itemize}[leftmargin=0in, label={}]
+    \small{\item{
+     \textbf{Systems}{: Proxmox VE, LXC, Debian, Arch, Docker, systemd} \\
+     \textbf{Networking}{: DNS, DHCP, SMTP/IMAP, pfSense, Linux bridges, Tailscale, SSH, Wireshark, Nmap} \\
+     \textbf{Hardware}{: PCIe GPU passthrough, PCIe KVM, SPI flash programming (CH341A, flashrom), ESP32, 3D printing} \\
+     \textbf{DevOps \& Languages}{: Git/GitHub, Vercel, Railway, Supabase, Coolify, VPS admin, Bash, SQL}
+    }}
+ \end{itemize}
+ \vspace{-16pt}
+
+
+%-----------EXPERIENCE-----------
+\section{EXPERIENCE}
+  \resumeSubHeadingListStart
+
+    \resumeSubheading
+      {Appenza}{Jul 2026 -- Aug 2026}
+      {Intern}{Egypt}
+      \resumeItemListStart
+        \resumeItem{Built and deployed a voice-first executive assistant for a client office on a VPS I administered (Coolify, Docker), reachable only over Tailscale, which I set up on the client's laptop.}
+        \resumeItem{Became the client office's go-to IT contact, installing software and fixing issues; an MX lookup I ran led to working with their IT team to move the domain's mail off Hostinger.}
+    \resumeItemListEnd
+
+    \resumeSubheading
+      {RUSLUG -- Rutgers Student Linux User Group}{Sep 2026 -- Present}
+      {Vice President}{New Brunswick, NJ}
+      \resumeItemListStart
+        \resumeItem{Present on Linux and open source; walk members through the shell, Bash and core command-line tools.}
+        \resumeItem{Troubleshoot peers' Linux installs and desktop environments; help run install fests and ricing competitions.}
+        \resumeItem{Demo new distributions live as VMs on my homelab so members can try them without installing anything.}
+    \resumeItemListEnd
+
+    \resumeSubheading
+      {Wythe Windows, Inc}{May 2023 -- Aug 2024}
+      {Manufacturing Associate}{Ramsey, NJ}
+      \resumeItemListStart
+        \resumeItem{Worked fabrication, assembly and glazing to standard procedures; tore down and reworked finished units to fix defects.}
+    \resumeItemListEnd
+
+  \resumeSubHeadingListEnd
+\vspace{-12pt}
+
+
+%-----------PROJECTS-----------
+\section{PROJECTS}
+    \vspace{-5pt}
+    \resumeSubHeadingListStart
+
+      \resumeProjectHeading
+          {\textbf{Homelab: Virtual Enterprise Network} $|$ \emph{Proxmox VE, Active Directory, pfSense, Splunk}}{Dec 2025 -- Present}
+          \resumeItemListStart
+            \resumeItem{Run Proxmox VE on bare metal: 8 VMs and 4 LXC containers on one node, segmented from my home LAN by pfSense.}
+            \resumeItem{Built an AD domain on Windows Server 2022 (AD DS, DNS, DHCP) with a Windows 11 client under Group Policy.}
+            \resumeItem{Centralized Windows logs in Splunk (Forwarders, Sysmon) and detected my own Nmap and LLMNR attacks from Kali.}
+            \resumeItem{Set up PCIe GPU passthrough to a remote Arch desktop VM, debugging across hardware, hypervisor and guest OS.}
+            \resumeItem{Added a PCIe KVM card for out-of-band console and power control; remote access is Tailscale-only, no open ports.}
+          \resumeItemListEnd
+          \vspace{-13pt}
+
+      \resumeProjectHeading
+          {\textbf{Enterprise-Locked Chromebox Recovery} $|$ \emph{SPI Flash, CH341A, coreboot, Debian}}{Oct 2026}
+          \resumeItemListStart
+            \resumeItem{Ruled out a drive swap and CMOS reset, then traced an enterprise enrollment lock to the board's SPI flash chip.}
+            \resumeItem{Removed write protection, backed up factory firmware via a CH341A programmer, then flashed and verified coreboot.}
+            \resumeItem{Installed Debian 13; it now runs headless over Tailscale SSH as the always-on server for DJWYA's scheduled jobs.}
+          \resumeItemListEnd
+          \vspace{-13pt}
+
+    \resumeProjectHeading
+    {\textbf{DJWYA.live: Festival Discovery Platform} $|$ \emph{Next.js, FastAPI, Docker, Supabase, Vercel}}{Feb 2026 -- Present}
+    \resumeItemListStart
+      \resumeItem{Run it solo: Next.js on Vercel, Dockerized FastAPI on Railway, Supabase Postgres, and scrapers on the Chromebox.}
+      \resumeItem{Designed a 7-axis ``Sonic DNA'' model and a ranking engine mixing cosine similarity, distance decay and BM25.}
+      \resumeItem{Built an artist-classification pipeline on the Last.fm API with key rotation and a parent/child genre graph.}
+      \resumeItem{Automated lineup ingestion with scrapers that extract lineups from festival sites and posters into Postgres.}
+      \resumeItem{Shipped a D3 genre network graph, a Leaflet festival map, and group matching for 2--8 friends.}
+    \resumeItemListEnd
+    \vspace{-13pt}
+
+    \resumeSubHeadingListEnd
+\vspace{4pt}
+
+\begin{center}
+  \small\textit{Full descriptions and more projects at \href{https://oliolioxnfre.github.io/portfolio/}{\underline{oliolioxnfre.github.io/portfolio}}}
+\end{center}
+
+\end{document}
