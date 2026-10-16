@@ -50,8 +50,8 @@ function renderMisc() {
 function renderResume() {
   if (!links.resume) return;
   const icon = () => h("span", { class: "nf", "aria-hidden": "true", text: "\u{f15c}" });
-  $("#hero-links").append(h("li", {}, h("a", { href: links.resume }, icon(), " resume")));
-  $("#contact-list").append(h("li", {}, h("a", { href: links.resume },
+  $("#hero-links").append(h("li", {}, h("a", { href: links.resume, target: "_blank", rel: "noopener" }, icon(), " resume")));
+  $("#contact-list").append(h("li", {}, h("a", { href: links.resume, target: "_blank", rel: "noopener" },
     icon(), h("span", { class: "c-k", text: "resume" }), h("span", { class: "c-v", text: "resume.pdf" }))));
 }
 

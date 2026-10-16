@@ -5,8 +5,8 @@ export const links = {
   github: "https://github.com/oliolioxnfre",
   email: "oli.m.king@proton.me",
   linkedin: "https://www.linkedin.com/in/oliver-m-king",
-  // Drop a PDF at assets/resume.pdf and set this to "assets/resume.pdf" to show the link.
-  resume: null,
+  // Path to the resume PDF; set to null to hide the resume links.
+  resume: "resume.pdf",
 };
 
 // Rendered as a timeline, newest first. `when` is free text; leave it empty to omit.
