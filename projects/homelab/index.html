@@ -4,10 +4,10 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Homelab · Oliver King</title>
-  <meta name="description" content="Self-hosted infrastructure running at home.">
+  <meta name="description" content="A small enterprise network on one tower: Proxmox on bare metal, a pfSense-segmented lab, an Active Directory domain, Splunk logging, and GPU passthrough streamed anywhere over Tailscale.">
   <meta name="theme-color" content="#0e1014">
   <meta property="og:title" content="Homelab · Oliver King">
-  <meta property="og:description" content="Self-hosted infrastructure running at home.">
+  <meta property="og:description" content="Proxmox on bare metal running an Active Directory domain, pfSense, Splunk and a GPU-passthrough desktop I can reach from anywhere.">
   <link rel="icon" href="../../favicon.svg" type="image/svg+xml">
   <link rel="preload" href="../../assets/fonts/JetBrainsMonoNF-Regular.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="../../css/style.css">
@@ -42,42 +42,222 @@
       </div>
       <div>
         <h1>Homelab</h1>
-        <p class="tagline">Self-hosted infrastructure running at home.</p>
+        <p class="tagline">A small enterprise network on one tower: a Windows domain, a firewall, a SIEM, and a GPU-passthrough desktop I can reach from anywhere.</p>
         <ul class="proj-meta">
-          <li><ul class="tags" aria-label="Stack"><li>proxmox</li><li>linux</li><li>self-hosting</li></ul></li>
-          <li><span><span class="nf" aria-hidden="true">&#xf023;</span> private repo</span></li>
+          <li><ul class="tags" aria-label="Stack"><li>proxmox</li><li>active directory</li><li>pfsense</li><li>splunk</li><li>tailscale</li></ul></li>
+          <li><span><span class="nf" aria-hidden="true">&#xf233;</span> 1 node <span class="sep">·</span> 8 VMs <span class="sep">·</span> solo</span></li>
         </ul>
       </div>
     </header>
 
     <div class="proj-body">
-      <section class="section" aria-labelledby="overview-h">
-        <header class="sec-head"><span class="sec-num">01</span><h2 id="overview-h">Overview</h2></header>
+      <!-- 01 · why -->
+      <section class="section" aria-labelledby="why-h">
+        <header class="sec-head"><span class="sec-num">01</span><h2 id="why-h">Why I built it</h2></header>
         <div class="prose">
-          <!-- TODO(oliver): write this up. -->
-          <p class="wip">Write-up in progress.</p>
+          <p>I started this while studying for CompTIA Security+. I wanted an Active Directory lab to practice on, but the only machine I had with enough power to run one was my desktop, and I wanted to reach the lab from anywhere on campus.</p>
+          <p>I'd already run a lab under a type 2 hypervisor, and losing performance to the host OS bothered me. So I set three requirements: bare metal, headless, and remote, with the GPU passed through so the same tower could still be my everyday desktop. That led me to Proxmox VE.</p>
+          <p>The result is a small enterprise network on one machine: a Windows domain, a firewall between the lab and my home network, a SIEM collecting logs, and an attack box to test it all with. I reach every part of it from my laptop or phone over Tailscale.</p>
         </div>
       </section>
 
-      <!--
-        Section templates: copy one above this comment, bump the number, and give it a unique id.
-        Put images in assets/img/projects/homelab/ (WebP or JPEG, about 1600px wide).
-
-      <section class="section" aria-labelledby="how-h">
-        <header class="sec-head"><span class="sec-num">02</span><h2 id="how-h">How it works</h2></header>
+      <!-- 02 · inventory -->
+      <section class="section" aria-labelledby="inv-h">
+        <header class="sec-head"><span class="sec-num">02</span><h2 id="inv-h">What's running</h2></header>
         <div class="prose">
-          <p>...</p>
+          <p>One node runs everything. VM IDs are grouped by role, so the number tells you what a machine does.</p>
         </div>
-      </section>
-
-      <section class="section" aria-labelledby="gallery-h">
-        <header class="sec-head"><span class="sec-num">03</span><h2 id="gallery-h">Gallery</h2></header>
+        <dl class="stack specs">
+          <div><dt>cpu</dt><dd>AMD Ryzen 7 3800X <span class="dim">· 8 cores / 16 threads</span></dd></div>
+          <div><dt>memory</dt><dd>32 GB</dd></div>
+          <div><dt>hypervisor</dt><dd>Proxmox VE 9.1 <span class="dim">· KVM · EFI boot</span></dd></div>
+          <div><dt>storage</dt><dd>local <span class="dim">·</span> local-lvm <span class="dim">·</span> vm-storage</dd></div>
+        </dl>
+        <div class="inv-wrap">
+          <table class="inv">
+            <caption class="sr-only">Virtual machines on the Proxmox node</caption>
+            <thead><tr><th scope="col">id</th><th scope="col">name</th><th scope="col">os</th><th scope="col">role</th></tr></thead>
+            <tbody>
+              <tr class="g"><th scope="row">100</th><td>omarchy</td><td>Arch Linux</td><td>my desktop, with the GPU passed through</td></tr>
+              <tr><th scope="row">102</th><td>nix</td><td>NixOS</td><td>sandbox</td></tr>
+              <tr><th scope="row">103</th><td>openclaw</td><td>Linux</td><td>first home of the <a href="../djwya/">DJWYA</a> scrapers</td></tr>
+              <tr class="g"><th scope="row">200</th><td>DC-01</td><td>Windows Server 2022</td><td>domain controller: AD DS, DNS, DHCP, Group Policy</td></tr>
+              <tr><th scope="row">201</th><td>Win-client</td><td>Windows 11</td><td>domain-joined endpoint</td></tr>
+              <tr class="g"><th scope="row">300</th><td>splunker01</td><td>Ubuntu Server</td><td>Splunk Enterprise (SIEM)</td></tr>
+              <tr class="g"><th scope="row">400</th><td>Kali</td><td>Kali Linux</td><td>attack box</td></tr>
+              <tr class="g"><th scope="row">500</th><td>pfSense</td><td>pfSense</td><td>router and firewall between home and lab</td></tr>
+            </tbody>
+          </table>
+        </div>
         <figure class="photo">
-          <img src="../../assets/img/projects/homelab/shot-1.webp" alt="Describe the image" loading="lazy" decoding="async">
-          <figcaption>Caption</figcaption>
+          <img src="../../assets/img/projects/homelab/proxmox-dashboard.jpg" width="1024" height="600" alt="Proxmox VE 9.1.4 node summary: 16 CPUs on a Ryzen 7 3800X, 31 GiB RAM, and the VM list on the left with omarchy, nix, openclaw, DC-01, Win-client, splunker01, Kali and pfSense" loading="lazy" decoding="async">
+          <figcaption>The node's summary page in the Proxmox web UI. Every VM in the table is in the tree on the left.</figcaption>
         </figure>
       </section>
-      -->
+
+      <!-- 03 · network -->
+      <section class="section" aria-labelledby="net-h">
+        <header class="sec-head"><span class="sec-num">03</span><h2 id="net-h">Network</h2></header>
+        <div class="prose">
+          <p>The node has two Linux bridges. <code>vmbr0</code> sits on my home network. <code>vmbr1</code> is the lab's own switch, and its only way out is through pfSense. Anything I run in the lab, malware included, stays behind a firewall I control.</p>
+          <p>Inside the lab, the domain controller hands out DNS and DHCP, and the Windows machines forward their logs to Splunk. From outside, Tailscale gets me in without opening a single port on my router.</p>
+        </div>
+        <figure class="arch">
+          <div class="arch-scroll">
+            <svg viewBox="0 0 800 500" role="img" aria-labelledby="net-title net-desc">
+              <title id="net-title">Homelab network</title>
+              <desc id="net-desc">A single Proxmox node. The vmbr0 bridge connects to the home network and the internet. pfSense routes between vmbr0 and vmbr1, the isolated lab switch. On vmbr1 are the cyber.lab domain (DC-01, client01 and splunk01), kali01 and sploits01. client01 uses DC-01 for DNS on port 53 and forwards events to splunk01 on port 9997. The Arch desktop VM sits on vmbr0, and a laptop and phone on the Tailscale network stream it with Moonlight on port 47989.</desc>
+              <defs>
+                <marker id="arw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="a-head"/></marker>
+              </defs>
+
+              <rect class="a-net a-node" x="20" y="96" width="560" height="392" rx="8"/>
+              <text class="a-net-lbl" x="568" y="480" text-anchor="end">proxmox node · bare metal</text>
+              <rect class="a-dom" x="36" y="196" width="270" height="274" rx="8"/>
+              <text class="a-dom-lbl" x="50" y="216">cyber.lab domain</text>
+              <rect class="a-net" x="600" y="96" width="186" height="150" rx="8"/>
+              <text class="a-net-lbl" x="774" y="238" text-anchor="end">tailnet · tailscale</text>
+
+              <g class="a-box a-ext"><rect x="330" y="20" width="140" height="44" rx="6"/><text x="400" y="47">internet</text></g>
+              <g class="a-box"><rect x="350" y="116" width="100" height="52" rx="6"/><text x="400" y="138">vmbr0</text><text class="a-sub" x="400" y="157">home LAN</text></g>
+              <g class="a-box a-gpu"><rect x="476" y="116" width="94" height="52" rx="6"/><text x="523" y="138">omarchy</text><text class="a-sub" x="523" y="157">Arch · GPU</text></g>
+              <g class="a-box a-fw"><rect x="340" y="216" width="120" height="52" rx="6"/><text x="400" y="238">pfSense01</text><text class="a-sub" x="400" y="257">firewall</text></g>
+              <g class="a-box"><rect x="340" y="316" width="120" height="52" rx="6"/><text x="400" y="338">vmbr1</text><text class="a-sub" x="400" y="357">lab switch</text></g>
+              <g class="a-box"><rect x="340" y="414" width="120" height="52" rx="6"/><text x="400" y="436">sploits01</text><text class="a-sub" x="400" y="455">Metasploitable</text></g>
+              <g class="a-box a-atk"><rect x="482" y="316" width="88" height="52" rx="6"/><text x="526" y="338">kali01</text><text class="a-sub" x="526" y="357">attacker</text></g>
+              <g class="a-box"><rect x="60" y="228" width="150" height="50" rx="6"/><text x="135" y="249">DC-01</text><text class="a-sub" x="135" y="267">Win Server 2022</text></g>
+              <g class="a-box"><rect x="60" y="312" width="150" height="50" rx="6"/><text x="135" y="333">client01</text><text class="a-sub" x="135" y="351">Windows 11</text></g>
+              <g class="a-box a-db"><rect x="60" y="396" width="150" height="50" rx="6"/><text x="135" y="417">splunk01</text><text class="a-sub" x="135" y="435">Ubuntu · Splunk</text></g>
+              <g class="a-box"><rect x="618" y="116" width="150" height="52" rx="6"/><text x="693" y="138">laptop · phone</text><text class="a-sub" x="693" y="157">Moonlight → :47989</text></g>
+              <text class="a-lbl" x="618" y="196">no ports open</text>
+              <text class="a-lbl" x="618" y="212">to the internet</text>
+
+              <line class="a-edge" x1="400" y1="116" x2="400" y2="66" marker-end="url(#arw)"/>
+              <line class="a-edge" x1="476" y1="142" x2="452" y2="142" marker-end="url(#arw)"/>
+              <line class="a-edge" x1="618" y1="142" x2="572" y2="142" marker-end="url(#arw)"/>
+              <line class="a-edge" x1="400" y1="216" x2="400" y2="170" marker-end="url(#arw)"/>
+              <text class="a-lbl" x="410" y="197">WAN</text>
+              <line class="a-edge" x1="400" y1="316" x2="400" y2="270" marker-end="url(#arw)"/>
+              <text class="a-lbl" x="410" y="297">vtnet1 · LAN</text>
+              <line class="a-edge" x1="400" y1="414" x2="400" y2="370" marker-end="url(#arw)"/>
+              <line class="a-edge" x1="482" y1="342" x2="462" y2="342" marker-end="url(#arw)"/>
+              <line class="a-edge" x1="306" y1="342" x2="338" y2="342" marker-end="url(#arw)"/>
+              <line class="a-edge a-dash" x1="135" y1="312" x2="135" y2="280" marker-end="url(#arw)"/>
+              <text class="a-lbl" x="147" y="300">DNS :53</text>
+              <line class="a-edge a-dash" x1="135" y1="362" x2="135" y2="394" marker-end="url(#arw)"/>
+              <text class="a-lbl" x="147" y="383">events :9997</text>
+            </svg>
+          </div>
+        </figure>
+        <p class="demo-note">Redrawn from my <a href="../../assets/img/projects/homelab/network-diagram.jpg">original draw.io diagram ↗</a></p>
+      </section>
+
+      <!-- 04 · what I set up -->
+      <section class="section" aria-labelledby="what-h">
+        <header class="sec-head"><span class="sec-num">04</span><h2 id="what-h">What I set up</h2></header>
+        <ul class="features">
+          <li>
+            <h3 class="feat-title">Bare-metal hypervisor</h3>
+            <p>Proxmox VE installed directly on the tower, instead of a type 2 hypervisor running on a desktop OS. There's no host OS taking a cut, and the whole node is managed from the web UI on port 8006.</p>
+          </li>
+          <li>
+            <h3 class="feat-title">Segmented network</h3>
+            <p>pfSense is the virtual router and firewall, with a hard boundary between my home network and the lab. Attacks and malware I run in the lab can't reach the rest of the house.</p>
+          </li>
+          <li>
+            <h3 class="feat-title">Active Directory</h3>
+            <p>Windows Server 2022 is the domain controller for <code>cyber.lab</code>, running AD DS, DNS and DHCP. A Windows 11 client is joined to the domain, and Group Policy Objects push security baselines to it. It's the same day-to-day admin work an IT team does.</p>
+          </li>
+          <li>
+            <h3 class="feat-title">Central logging</h3>
+            <p>Splunk Enterprise runs on Ubuntu Server. Universal Forwarders on the Windows hosts ship events on port 9997, and Sysmon with the SwiftOnSecurity config records process creation and network connections.</p>
+          </li>
+          <li>
+            <h3 class="feat-title">GPU passthrough</h3>
+            <p>The physical graphics card is passed through over PCIe to an Arch Linux VM. The VM gets near-native graphics, and the tower still works as my everyday desktop.</p>
+          </li>
+          <li>
+            <h3 class="feat-title">Remote access</h3>
+            <p>Sunshine on the VM encodes with the GPU's NVENC encoder, and Moonlight on my laptop or phone plays it back. Tailscale carries all of it, encrypted and peer-to-peer.</p>
+          </li>
+        </ul>
+      </section>
+
+      <!-- 05 · the interesting problem -->
+      <section class="section" aria-labelledby="story-h">
+        <header class="sec-head"><span class="sec-num">05</span><h2 id="story-h">From laggy RDP to a daily driver</h2></header>
+        <div class="prose">
+          <p>Building the lab was the easy part. Making the same box usable as my desktop from anywhere took the most work:</p>
+        </div>
+        <ol class="timeline story">
+          <li><span class="when">before</span><span class="dot" aria-hidden="true"></span><div>
+            <span class="what">A lab inside my desktop OS</span>
+            <span class="note">My first lab ran under a type 2 hypervisor. It worked, but I was losing performance to the host, and I couldn't reach it away from my desk.</span>
+          </div></li>
+          <li><span class="when">rebuild</span><span class="dot" aria-hidden="true"></span><div>
+            <span class="what">Proxmox on bare metal</span>
+            <span class="note">I reinstalled the tower with Proxmox VE as a type 1 hypervisor. The machine went headless, and everything now goes through the web UI.</span>
+          </div></li>
+          <li><span class="when">problem</span><span class="dot" aria-hidden="true"></span><div>
+            <span class="what">RDP and noVNC weren't enough</span>
+            <span class="note">Both were fine for admin tasks, but the latency was too high to use a VM as my everyday desktop.</span>
+          </div></li>
+          <li><span class="when">fix</span><span class="dot" aria-hidden="true"></span><div>
+            <span class="what">PCIe GPU passthrough</span>
+            <span class="note">I dedicated the physical graphics card to the Arch Linux VM. This was the hardest part of the build: when it didn't work, the cause could be in the hardware, the hypervisor or the guest, and I had to work out which.</span>
+          </div></li>
+          <li><span class="when">fix</span><span class="dot" aria-hidden="true"></span><div>
+            <span class="what">Sunshine and Moonlight</span>
+            <span class="note">Sunshine streams the VM using NVENC, and Moonlight plays it back with under 50 ms of latency. It's fast enough to work, and even game, from anywhere.</span>
+          </div></li>
+          <li><span class="when">remote</span><span class="dot" aria-hidden="true"></span><div>
+            <span class="what">Tailscale</span>
+            <span class="note">Tailscale put the lab on a private network I can reach from anywhere, with no ports forwarded. Once it worked I added more of my devices to the tailnet, and it now links the machines across my other projects.</span>
+          </div></li>
+          <li><span class="when">later</span><span class="dot" aria-hidden="true"></span><div>
+            <span class="what">A lab box isn't production</span>
+            <span class="note">The first <a href="../djwya/">DJWYA</a> scrapers ran in VMs here. When I powered the node down for a few weeks, they stopped without telling anyone. I moved them to an always-on <a href="../bios-programming/">Chromebox</a> with alerting, and the lab went back to being a lab.</span>
+          </div></li>
+        </ol>
+      </section>
+
+      <!-- 06 · testing -->
+      <section class="section" aria-labelledby="test-h">
+        <header class="sec-head"><span class="sec-num">06</span><h2 id="test-h">Testing it</h2></header>
+        <ul class="checks">
+          <li><span class="ck" aria-hidden="true">✓</span><div><b>Attack, then look.</b> From kali01 I ran Nmap scans and LLMNR/NBT-NS poisoning against the domain, then switched to Splunk to see what they left behind. Both showed up, which confirmed the logging pipeline worked end to end.</div></li>
+          <li><span class="ck" aria-hidden="true">✓</span><div><b>Detections.</b> I wrote Splunk queries that match the specific artifacts those attacks leave, so the logs aren't just collected but searched.</div></li>
+          <li><span class="ck" aria-hidden="true">✓</span><div><b>Containment.</b> The lab only reaches my home network through pfSense, and nothing is exposed to the internet. Remote access goes through Tailscale.</div></li>
+          <li><span class="ck todo" aria-hidden="true">○</span><div><b>Updates.</b> The node pulls from Proxmox's no-subscription repository, which the dashboard flags as not production-ready. That's fine for a lab. A production cluster would use the enterprise repository.</div></li>
+          <li><span class="ck todo" aria-hidden="true">○</span><div><b>Next.</b> Scheduled backups of the domain controller and SIEM, so a bad update is a restore instead of a rebuild.</div></li>
+        </ul>
+      </section>
+
+      <!-- 07 · lessons -->
+      <section class="section" aria-labelledby="learn-h">
+        <header class="sec-head"><span class="sec-num">07</span><h2 id="learn-h">What carries over</h2></header>
+        <div class="prose">
+          <p>I went in to study security, and that phase was short. The infrastructure is what stuck: installing a hypervisor on bare metal, wiring bridges and a firewall, standing up a domain with DNS, DHCP and Group Policy, getting logs from every endpoint into one place, and making all of it reachable remotely without exposing anything.</p>
+          <p>Those are the same jobs an IT team does every day, at the scale of one tower. GPU passthrough taught me the most, because it made me troubleshoot across layers, from the PCIe hardware through the hypervisor to the guest OS.</p>
+        </div>
+        <aside class="callout">
+          <h3 class="feat-title">Where it's used today</h3>
+          <p>The lab still runs. The tailnet it started now connects my other machines, including the Chromebox that runs DJWYA's scrapers, and those scrapers started out here.</p>
+        </aside>
+      </section>
+
+      <!-- 08 · stack -->
+      <section class="section" aria-labelledby="stack-h">
+        <header class="sec-head"><span class="sec-num">08</span><h2 id="stack-h">Stack</h2></header>
+        <dl class="stack">
+          <div><dt>compute</dt><dd><ul class="tags"><li>proxmox ve</li><li>kvm</li><li>pcie passthrough</li><li>lvm</li></ul></dd></div>
+          <div><dt>network</dt><dd><ul class="tags"><li>pfsense</li><li>linux bridges</li><li>dns</li><li>dhcp</li><li>tailscale</li></ul></dd></div>
+          <div><dt>identity</dt><dd><ul class="tags"><li>active directory</li><li>windows server 2022</li><li>group policy</li><li>windows 11</li></ul></dd></div>
+          <div><dt>logging</dt><dd><ul class="tags"><li>splunk enterprise</li><li>universal forwarder</li><li>sysmon</li></ul></dd></div>
+          <div><dt>remote</dt><dd><ul class="tags"><li>sunshine</li><li>moonlight</li><li>nvenc</li></ul></dd></div>
+          <div><dt>testing</dt><dd><ul class="tags"><li>kali linux</li><li>nmap</li><li>metasploitable 2</li></ul></dd></div>
+        </dl>
+      </section>
     </div>
 
     <nav class="proj-nav" aria-label="More projects">

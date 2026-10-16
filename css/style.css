@@ -325,6 +325,36 @@ h1 {
 .a-edge { stroke: var(--muted); stroke-width: 1.25; }
 .a-head { fill: var(--muted); }
 .a-lbl { fill: var(--cyan); font-size: 11px; }
+.a-dash { stroke-dasharray: 4 3; }
+.a-node { fill: none; }
+.a-dom { fill: color-mix(in srgb, var(--blue) 5%, transparent); stroke: var(--blue); stroke-dasharray: 6 5; opacity: .8; }
+.a-dom-lbl { fill: var(--blue); font-size: 11px; }
+.a-fw rect { stroke: var(--amber); }
+.a-atk rect { stroke: var(--red); }
+.a-gpu rect { stroke: var(--magenta); }
+.a-led rect { stroke: var(--red); }
+.a-chip { fill: color-mix(in srgb, var(--green) 4%, transparent); stroke: var(--green); stroke-dasharray: 6 5; opacity: .8; }
+.a-chip-lbl { fill: var(--green); font-size: 11px; }
+
+/* photo + video side by side; column ratio matches a 9:16 clip next to a square photo */
+.gallery { display: grid; grid-template-columns: 35fr 65fr; gap: 1rem; margin-top: 2rem; align-items: start; }
+.gallery figure { margin: 0; }
+.gallery img, .gallery video { display: block; width: 100%; height: auto; border-radius: 4px; border: 1px solid var(--line); background: var(--bg-2); }
+.gallery figcaption { margin-top: .6rem; font-size: 13px; color: var(--muted); }
+.story-after { margin-top: 1.75rem; }
+
+/* homelab inventory */
+.proj-body code { font: inherit; color: var(--fg-hi); }
+.specs { margin: 1.5rem 0 0; }
+.specs dd { color: var(--fg-hi); }
+.inv-wrap { margin-top: 1.5rem; overflow-x: auto; border: 1px solid var(--line); border-radius: 6px; background: var(--bg-2); }
+.inv { width: 100%; min-width: 560px; border-collapse: collapse; font-size: 13px; }
+.inv th, .inv td { padding: .55rem .9rem; text-align: left; vertical-align: top; }
+.inv thead th { color: var(--muted); font-weight: 400; border-bottom: 1px solid var(--line-hi); }
+.inv tbody th { color: var(--amber); font-weight: 700; width: 5ch; }
+.inv tbody td:nth-child(2) { color: var(--fg-hi); white-space: nowrap; }
+.inv tbody td:nth-child(3) { color: var(--muted); white-space: nowrap; }
+.inv tbody tr.g:not(:first-child) { border-top: 1px solid var(--line); }
 
 /* story timeline reuses .timeline; give it more room */
 .story { margin-top: 1.5rem; }
@@ -430,6 +460,11 @@ h1 {
   .browser-view { aspect-ratio: auto; height: 70vh; min-height: 420px; }
   .browser-bar .dots { display: none; }
   .stack > div { grid-template-columns: 1fr; gap: .25rem; }
+  .gallery { grid-template-columns: 1fr; }
+  .gallery figure:first-child { max-width: 280px; }
+  .inv { min-width: 0; }
+  .inv th:nth-child(3), .inv td:nth-child(3) { display: none; }
+  .inv th, .inv td { padding: .5rem .6rem; }
   .boot { font-size: 12px; }
 }
 @media (max-width: 520px) {

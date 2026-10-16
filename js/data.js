@@ -23,8 +23,8 @@ export const projects = [
     slug: "homelab",
     name: "Homelab",
     image: "assets/img/projects/homelab.webp",
-    summary: "Self-hosted infrastructure running at home.",
-    tags: ["proxmox", "linux", "self-hosting"],
+    summary: "Proxmox node running an Active Directory domain, pfSense, Splunk and a remote GPU-passthrough desktop.",
+    tags: ["proxmox", "active directory", "networking"],
     repo: null,
   },
   {
@@ -39,8 +39,8 @@ export const projects = [
     slug: "esp32-matrix",
     name: "ESP32-Matrix",
     image: "assets/img/projects/esp32-matrix.webp",
-    summary: "ESP32-S3 desk ticker on eight LED matrices: clock, stocks, Tetris.",
-    tags: ["c++", "esp32-s3", "embedded"],
+    summary: "ESP32-S3 desk display on eight LED matrices in a 3D-printed case: stocks, clock, timer, games.",
+    tags: ["c++", "esp32-s3", "hardware"],
     repo: "https://github.com/oliolioxnfre/ESP32AttiaMatrix",
   },
   {

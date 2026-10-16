@@ -4,10 +4,10 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>ESP32-Matrix · Oliver King</title>
-  <meta name="description" content="ESP32-S3 desk ticker on eight chained MAX7219 LED matrices.">
+  <meta name="description" content="A desk display I built from an ESP32-S3 and eight MAX7219 LED matrices in a 3D-printed case: stock ticker, clock, timer and games on three buttons.">
   <meta name="theme-color" content="#0e1014">
   <meta property="og:title" content="ESP32-Matrix · Oliver King">
-  <meta property="og:description" content="ESP32-S3 desk ticker on eight chained MAX7219 LED matrices.">
+  <meta property="og:description" content="ESP32-S3 desk display on eight LED matrices in a 3D-printed case: stock ticker, clock, timer and games.">
   <link rel="icon" href="../../favicon.svg" type="image/svg+xml">
   <link rel="preload" href="../../assets/fonts/JetBrainsMonoNF-Regular.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="../../css/style.css">
@@ -42,42 +42,193 @@
       </div>
       <div>
         <h1>ESP32-Matrix</h1>
-        <p class="tagline">ESP32-S3 desk ticker on eight chained MAX7219 LED matrices.</p>
+        <p class="tagline">A desk display on an ESP32-S3 and eight LED matrices, in a case I designed and 3D-printed. It runs a stock ticker, a clock, a timer and games from three buttons.</p>
         <ul class="proj-meta">
-          <li><ul class="tags" aria-label="Stack"><li>c++</li><li>esp32-s3</li><li>max7219</li><li>spi</li><li>embedded</li></ul></li>
-          <li><a href="https://github.com/oliolioxnfre/ESP32AttiaMatrix"><span class="nf" aria-hidden="true">&#xf09b;</span> source</a></li>
+          <li><a href="https://github.com/oliolioxnfre/ESP32AttiaMatrix"><span class="nf" aria-hidden="true">&#xf09b;</span> source ↗</a></li>
+          <li>Jun–Jul 2026 <span class="sep">·</span> solo</li>
         </ul>
       </div>
     </header>
 
     <div class="proj-body">
-      <section class="section" aria-labelledby="overview-h">
-        <header class="sec-head"><span class="sec-num">01</span><h2 id="overview-h">Overview</h2></header>
+      <!-- 01 · why -->
+      <section class="section" aria-labelledby="why-h">
+        <header class="sec-head"><span class="sec-num">01</span><h2 id="why-h">Why I built it</h2></header>
         <div class="prose">
-          <p>Shows a synced clock and live stock prices, and plays Tetris and Stacker on its hardware buttons.</p>
-          <p>The display runs over SPI. Four active-low buttons with internal pull-ups handle power, screen cycling and game input, and a long press resets WiFi.</p>
+          <p>I've always wanted to build things in hardware, not just software, but the learning curve kept me away. After my <a href="../homelab/">homelab</a>, <a href="../djwya/">DJWYA</a> and some 3D printing at school, it stopped looking scary. I have bigger hardware ideas, and I wanted to learn microcontrollers on something small first.</p>
+          <p>There was also a deadline. In July I was meeting my girlfriend's extended family in Egypt for the first time, and her father was hosting me. He already had everything he needed, so I wanted to give him something he couldn't buy.</p>
+          <p>That gave the project three goals: learn to program a microcontroller, learn to model a custom enclosure, and make a gift worth giving.</p>
         </div>
       </section>
 
-      <!--
-        Section templates: copy one above this comment, bump the number, and give it a unique id.
-        Put images in assets/img/projects/esp32-matrix/ (WebP or JPEG, about 1600px wide).
+      <!-- 02 · the build -->
+      <section class="section" aria-labelledby="build-h">
+        <header class="sec-head"><span class="sec-num">02</span><h2 id="build-h">The build</h2></header>
+        <div class="prose">
+          <p>It started on a breadboard: an ESP32-S3, two 4-in-1 MAX7219 boards (eight 8×8 modules chained into one 8×64 strip), and buttons and a buzzer from an electronics kit. The plan was a stock ticker. That worked quickly, so it grew into a clock, a timer and games.</p>
+          <p>The enclosure was one of the hardest parts. I measured every internal component and modelled a case to hold them, then printed it again and again. The displays didn't sit right, the buttons took too much room, or the board didn't fit. Each failure meant starting over, until one version held everything and the whole thing worked as intended.</p>
+        </div>
+        <div class="gallery">
+          <figure>
+            <video src="../../assets/img/projects/esp32-matrix/prototype.mp4" poster="../../assets/img/projects/esp32-matrix/prototype-poster.jpg" width="540" height="960" controls muted loop playsinline preload="none" aria-label="The bare LED strip on a workbench running an animation, wired to the ESP32-S3"></video>
+            <figcaption>The prototype before the case: eight modules running an animation off the ESP32-S3.</figcaption>
+          </figure>
+          <figure>
+            <img src="../../assets/img/projects/esp32-matrix/enclosure.jpg" width="1400" height="1361" alt="The finished black 3D-printed enclosure on a workbench, with two metal push buttons on its end and wires running out the back" loading="lazy" decoding="async">
+            <figcaption>The finished enclosure, with the metal push buttons on the end.</figcaption>
+          </figure>
+        </div>
+      </section>
 
+      <!-- 03 · what it does -->
+      <section class="section" aria-labelledby="what-h">
+        <header class="sec-head"><span class="sec-num">03</span><h2 id="what-h">What it does</h2></header>
+        <ul class="features">
+          <li>
+            <h3 class="feat-title">Stock ticker</h3>
+            <p>Scrolls price, change and percent change for chosen symbols from the Finnhub API, refreshed every five minutes in the background.</p>
+          </li>
+          <li>
+            <h3 class="feat-title">Clock</h3>
+            <p>A 12-hour clock synced over NTP to the configured timezone, with digits that slide into place.</p>
+          </li>
+          <li>
+            <h3 class="feat-title">Timer with a custom alarm</h3>
+            <p>A countdown up to 99:59. When it ends, the buzzer plays Egypt's national anthem. I converted the anthem from a MIDI file into note and duration data for the passive buzzer, using a small Python script.</p>
+          </li>
+          <li>
+            <h3 class="feat-title">Games</h3>
+            <p>Tetris on a vertical playfield with a high score saved across reboots, a Stacker arcade game, and a reaction test that reports your time in milliseconds.</p>
+          </li>
+          <li>
+            <h3 class="feat-title">Setup without a laptop</h3>
+            <p>On first boot the device opens its own Wi-Fi network with a setup page for Wi-Fi credentials, API key, symbols and timezone, then saves them to flash.</p>
+          </li>
+          <li>
+            <h3 class="feat-title">Three buttons, many gestures</h3>
+            <p>Double-press for the next screen, five quick presses to switch the display off, and a five-second hold to wipe Wi-Fi settings. Each screen maps the left and right buttons to its own controls.</p>
+          </li>
+        </ul>
+      </section>
+
+      <!-- 04 · how it works -->
       <section class="section" aria-labelledby="how-h">
-        <header class="sec-head"><span class="sec-num">02</span><h2 id="how-h">How it works</h2></header>
+        <header class="sec-head"><span class="sec-num">04</span><h2 id="how-h">How it works</h2></header>
         <div class="prose">
-          <p>...</p>
+          <p>The firmware is a state machine with one state per screen. Network calls run in a separate FreeRTOS task on the chip's other core, so a slow API request never freezes the display. A mutex protects the ticker text that both cores share.</p>
         </div>
-      </section>
+        <figure class="arch">
+          <div class="arch-scroll">
+            <svg viewBox="0 0 760 380" role="img" aria-labelledby="esp-title esp-desc">
+              <title id="esp-title">ESP32-Matrix wiring and firmware</title>
+              <desc id="esp-desc">The ESP32-S3 runs a network task on core 0, which fetches quotes from the Finnhub API, and the display state machine on core 1, which drives eight MAX7219 modules over SPI on GPIO 10 to 12. The two share ticker text under a mutex. Three buttons connect on GPIO 5, 6 and 7, and a passive buzzer on GPIO 8 uses GPIO 15 as its ground. A phone joins the device's own Wi-Fi network to save settings to NVS flash, and the clock syncs from NTP servers.</desc>
+              <defs>
+                <marker id="arw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="a-head"/></marker>
+              </defs>
 
-      <section class="section" aria-labelledby="gallery-h">
-        <header class="sec-head"><span class="sec-num">03</span><h2 id="gallery-h">Gallery</h2></header>
-        <figure class="photo">
-          <img src="../../assets/img/projects/esp32-matrix/shot-1.webp" alt="Describe the image" loading="lazy" decoding="async">
-          <figcaption>Caption</figcaption>
+              <rect class="a-chip" x="220" y="40" width="260" height="330" rx="8"/>
+              <text class="a-chip-lbl" x="468" y="362" text-anchor="end">esp32-s3 · freertos</text>
+
+              <g class="a-box a-db"><rect x="240" y="62" width="220" height="52" rx="6"/><text x="350" y="84">NVS flash</text><text class="a-sub" x="350" y="103">wi-fi · api key · timezone</text></g>
+              <g class="a-box"><rect x="240" y="146" width="220" height="52" rx="6"/><text x="350" y="168">core 0</text><text class="a-sub" x="350" y="187">network task</text></g>
+              <g class="a-box"><rect x="240" y="254" width="220" height="52" rx="6"/><text x="350" y="276">core 1</text><text class="a-sub" x="350" y="295">display state machine</text></g>
+
+              <g class="a-box"><rect x="20" y="62" width="150" height="52" rx="6"/><text x="95" y="84">phone</text><text class="a-sub" x="95" y="103">setup page</text></g>
+              <g class="a-box"><rect x="20" y="254" width="150" height="52" rx="6"/><text x="95" y="276">3 buttons</text><text class="a-sub" x="95" y="295">GPIO 5 · 6 · 7</text></g>
+              <g class="a-box"><rect x="20" y="316" width="150" height="50" rx="6"/><text x="95" y="337">passive buzzer</text><text class="a-sub" x="95" y="355">GPIO 8 · gnd 15</text></g>
+
+              <g class="a-box a-ext"><rect x="580" y="62" width="160" height="44" rx="6"/><text x="660" y="89">NTP servers</text></g>
+              <g class="a-box a-ext"><rect x="580" y="150" width="160" height="44" rx="6"/><text x="660" y="177">Finnhub API</text></g>
+              <g class="a-box a-led"><rect x="580" y="254" width="160" height="52" rx="6"/><text x="660" y="276">8 × MAX7219</text><text class="a-sub" x="660" y="295">8 × 64 LEDs</text></g>
+
+              <line class="a-edge" x1="170" y1="88" x2="238" y2="88" marker-end="url(#arw)"/>
+              <text class="a-lbl" x="194" y="80" text-anchor="middle">own AP</text>
+              <line class="a-edge" x1="578" y1="84" x2="482" y2="84" marker-end="url(#arw)"/>
+              <text class="a-lbl" x="530" y="76" text-anchor="middle">clock sync</text>
+              <line class="a-edge" x1="460" y1="172" x2="578" y2="172" marker-end="url(#arw)" marker-start="url(#arw)"/>
+              <text class="a-lbl" x="519" y="164" text-anchor="middle">quotes · 5 min</text>
+              <line class="a-edge a-dash" x1="350" y1="198" x2="350" y2="252" marker-end="url(#arw)"/>
+              <text class="a-lbl" x="362" y="230">ticker text · mutex</text>
+              <line class="a-edge" x1="170" y1="280" x2="238" y2="280" marker-end="url(#arw)"/>
+              <line class="a-edge" x1="460" y1="280" x2="578" y2="280" marker-end="url(#arw)"/>
+              <text class="a-lbl" x="519" y="272" text-anchor="middle">SPI</text>
+              <text class="a-lbl" x="519" y="296" text-anchor="middle">GPIO 10–12</text>
+              <line class="a-edge" x1="220" y1="341" x2="172" y2="341" marker-end="url(#arw)"/>
+              <text class="a-lbl" x="196" y="333" text-anchor="middle">PWM</text>
+            </svg>
+          </div>
         </figure>
       </section>
-      -->
+
+      <!-- 05 · the interesting problem -->
+      <section class="section" aria-labelledby="story-h">
+        <header class="sec-head"><span class="sec-num">05</span><h2 id="story-h">The flicker that wasn't power</h2></header>
+        <div class="prose">
+          <p>When pixels moved quickly, the whole eight-module chain flickered, including the parts of the image that weren't changing. This is how I tracked it down:</p>
+        </div>
+        <ol class="timeline story">
+          <li><span class="when">symptom</span><span class="dot" aria-hidden="true"></span><div>
+            <span class="what">The whole strip flickers</span>
+            <span class="note">The flicker only showed up during fast motion, such as a falling Tetris piece or a busy animation. Static screens were fine.</span>
+          </div></li>
+          <li><span class="when">guess</span><span class="dot" aria-hidden="true"></span><div>
+            <span class="what">Suspected power</span>
+            <span class="note">Eight matrices draw a lot of current, so I lowered the brightness and tried a higher-voltage supply. Neither changed anything, which ruled power out.</span>
+          </div></li>
+          <li><span class="when">clue</span><span class="dot" aria-hidden="true"></span><div>
+            <span class="what">It only happens when things move</span>
+            <span class="note">The display library pushes every change to the hardware immediately. Each frame blanked the entire chain and redrew it point by point, and fast motion meant many redraws.</span>
+          </div></li>
+          <li><span class="when">fix</span><span class="dot" aria-hidden="true"></span><div>
+            <span class="what">Build the frame, then send it once</span>
+            <span class="note">I paused hardware updates, drew the full frame in memory, and sent it in one write. Then I applied the same pattern to every screen.</span>
+          </div></li>
+        </ol>
+        <div class="prose story-after">
+          <p>Two smaller hardware issues came up along the way:</p>
+        </div>
+        <ul class="checks">
+          <li><span class="ck" aria-hidden="true">✓</span><div><b>Current draw.</b> At full brightness the matrices drew more than the board could comfortably supply. Brightness now runs at 1 of 15, which is still easy to read on a desk.</div></li>
+          <li><span class="ck todo" aria-hidden="true">○</span><div><b>Out of ground pins.</b> A spare GPIO (15) is held low and used as the buzzer's ground. It works, but next time I'd add a proper ground rail.</div></li>
+        </ul>
+      </section>
+
+      <!-- 06 · security -->
+      <section class="section" aria-labelledby="sec-h">
+        <header class="sec-head"><span class="sec-num">06</span><h2 id="sec-h">Security &amp; reliability</h2></header>
+        <ul class="checks">
+          <li><span class="ck" aria-hidden="true">✓</span><div><b>Physical reset only.</b> Wiping Wi-Fi settings takes a five-second button hold. Nothing can trigger it remotely.</div></li>
+          <li><span class="ck" aria-hidden="true">✓</span><div><b>No over-the-air updates.</b> Firmware goes on over USB, so changing it requires physical access.</div></li>
+          <li><span class="ck" aria-hidden="true">✓</span><div><b>Password handling.</b> The Wi-Fi password is masked in the setup form and never written to the serial log.</div></li>
+          <li><span class="ck" aria-hidden="true">✓</span><div><b>Found while writing this up.</b> I had committed a Finnhub API key to the public repo. An AI-assisted review flagged it, so I removed it and rotated the key. It's still in Git history, which is why rotating it was the real fix.</div></li>
+          <li><span class="ck todo" aria-hidden="true">○</span><div><b>Next.</b> Password-protect the setup network, stop the setup page from pre-filling saved credentials, turn on TLS certificate checking, and pin library versions. When a quote fetch fails, the ticker currently shows simulated prices that look real; I'd label them clearly instead.</div></li>
+        </ul>
+      </section>
+
+      <!-- 07 · lessons -->
+      <section class="section" aria-labelledby="learn-h">
+        <header class="sec-head"><span class="sec-num">07</span><h2 id="learn-h">What I'd do differently</h2></header>
+        <div class="prose">
+          <p>The firmware builds cleanly and runs all seven screens on the hardware. An AI coding assistant wrote the code. I built the hardware, diagnosed problems on the real device, and decided how the firmware should behave within the hardware's limits.</p>
+          <p>The AI produced working code quickly, but it shipped with certificate checking disabled and silent fake data, next to the key I'd committed. I didn't catch any of it until I reviewed the repo for this write-up. Next time I'd review generated code like any other change before it ships.</p>
+          <p>The habit I took away is methodical troubleshooting: rule out power before blaming the software, then document the fix so someone else can rebuild it. The repo's README has the full pinout, wiring notes and a troubleshooting table.</p>
+        </div>
+        <aside class="callout">
+          <h3 class="feat-title">What's next</h3>
+          <p>This was practice for bigger hardware ideas, starting with Huddy Horns, which is in progress.</p>
+        </aside>
+      </section>
+
+      <!-- 08 · stack -->
+      <section class="section" aria-labelledby="stack-h">
+        <header class="sec-head"><span class="sec-num">08</span><h2 id="stack-h">Stack</h2></header>
+        <dl class="stack">
+          <div><dt>hardware</dt><dd><ul class="tags"><li>esp32-s3</li><li>max7219 ×8</li><li>spi</li><li>passive buzzer</li><li>push buttons</li></ul></dd></div>
+          <div><dt>firmware</dt><dd><ul class="tags"><li>c++</li><li>arduino</li><li>platformio</li><li>freertos</li><li>md_parola</li><li>arduinojson</li></ul></dd></div>
+          <div><dt>network</dt><dd><ul class="tags"><li>wi-fi</li><li>captive portal</li><li>ntp</li><li>finnhub api</li><li>nvs flash</li></ul></dd></div>
+          <div><dt>tools</dt><dd><ul class="tags"><li>3d modelling</li><li>3d printing</li><li>python</li><li>midi</li></ul></dd></div>
+        </dl>
+      </section>
     </div>
 
     <nav class="proj-nav" aria-label="More projects">
