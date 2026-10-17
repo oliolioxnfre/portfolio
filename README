@@ -1,7 +1,7 @@
 Portfolio
 =========
 
-Oliver King's personal site: a terminal-styled single page, served as-is by GitHub Pages.
+My Personal Portfolio: a terminal-styled single page, served as-is by GitHub Pages.
 There is no build step or framework, just HTML, CSS and an ES module.
 
   index.html            home page: boot sequence, hero, about, experience, project grid, contact
